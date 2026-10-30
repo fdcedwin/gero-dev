@@ -1,0 +1,50 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Cta from "@/components/site/Cta.astro";
+import DirectoryListing from "@/components/business/DirectoryListing.astro";
+import { categoryIds, getCategoryMap, getPublishedBusinesses } from "@/lib/businesses";
+import { SITE } from "@/site";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const [businesses, categoryMap] = await Promise.all([getPublishedBusinesses(), getCategoryMap()]);
+  const usedCategoryIds = new Set(businesses.flatMap(categoryIds));
+  const filterCategories = [...categoryMap.values()]
+    .filter((category) => usedCategoryIds.has(category.id))
+    .sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+  // Empty categories get no page (avoids thin, empty pages in search results).
+  return filterCategories.flatMap((category) =>
+    paginate(
+      businesses.filter((business) => categoryIds(business).includes(category.id)),
+      {
+        params: { category: category.id },
+        pageSize: SITE.directoryPageSize,
+        props: { category, categoryMap, filterCategories },
+      },
+    ),
+  );
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page, category, categoryMap, filterCategories } = Astro.props;
+const name = category.data.name;
+const pageSuffix = page.currentPage > 1 ? ` – Page ${page.currentPage}` : "";
+---
+
+<BaseLayout
+  title={`${name} in Geraldton${pageSuffix} | ${SITE.name}`}
+  description={`Find ${name.toLowerCase()} in Geraldton, WA on the What's On Gero business directory.`}
+  currentNav="directory"
+  bodyClass="body-business-profile"
+>
+  <DirectoryListing
+    heading={name}
+    page={page}
+    categoryMap={categoryMap}
+    filterCategories={filterCategories}
+    activeCategoryId={category.id}
+  />
+  <Cta />
+</BaseLayout>

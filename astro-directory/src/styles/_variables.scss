@@ -1,0 +1,79 @@
+:root {
+
+    /* Blue */
+    --color-blue-900: #0e1e2f;
+    --color-blue-800: #1d3b5d;
+    --color-blue-600: #3b76ba;
+    --color-blue-400: #83abd8;
+    --color-blue-200: #d0dff1;
+    --color-blue-100: #eff4fa;
+
+    /* Orange */
+    --color-orange-900: #5b2305;
+    --color-orange-700: #b84900;
+    --color-orange-500: #ff6c0a;
+    --color-orange-300: #ff9d5c;
+    --color-orange-200: #ffdcc9;
+    --color-orange-100: #fff3eb;
+
+    /* Yellow */
+    --color-yellow-900: #47360b;
+    --color-yellow-700: #a17717;
+    --color-yellow-500: #fdc300;
+    --color-yellow-300: #edcd82;
+    --color-yellow-200: #f9f1dc;
+    --color-yellow-100: #fffaeb;
+
+    /* Red */
+    --color-red-900: #520100;
+    --color-red-700: #8f0200;
+    --color-red-500: #ff3633;
+    --color-red-300: #ff8785;
+    --color-red-200: #ffd7d6;
+    --color-red-100: #ffebeb;
+
+    /* Neutral */
+    --color-neutral-900: #1c2427;
+    --color-neutral-700: #374b52;
+    --color-neutral-500: #58737d;
+    --color-neutral-300: #a4b7bf;
+    --color-neutral-100: #f3f6f7;
+    --color-white: #ffffff;
+
+    /* Semantic colors */
+    --color-primary: var(--color-blue-800);
+    --color-primary-dark: var(--color-blue-900);
+    --color-primary-light: var(--color-blue-100);
+
+    --color-accent: var(--color-orange-500);
+    --color-warning: var(--color-yellow-500);
+    --color-danger: var(--color-red-500);
+
+    --color-heading: var(--color-blue-900);
+    --color-text: var(--color-neutral-700);
+    --color-text-muted: var(--color-neutral-500);
+
+    --color-background: var(--color-white);
+    --color-background-light: var(--color-blue-100);
+    --color-border: var(--color-blue-200);
+
+    // Spaces 
+    --space-small: 20px;
+    --space-xsmall: 10px;
+
+    //Text Colors
+    --color-text-black: var(--color-blue-900);
+
+    // Fonts 
+    --body-font: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --heading-font: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+    --container-width: 1328px;
+
+    // Font sizes 
+    --font-size-medium: 18px;
+    --font-size-xxsmall: 12px;
+
+    // Border radius 
+    --radius-regular: 10px;
+}

@@ -1,0 +1,37 @@
+.admin-controls {
+    .heading-line {
+        margin: 10px 0 20px;
+    }
+
+    &{
+        border-top: 2px solid var(--color-blue-200);
+        padding-top: 20px;
+    }
+
+    &__heading {
+        color: #8F0200;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: normal;
+    }
+
+    &__btns {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 20px;
+        align-self: stretch;
+    }
+
+    @media (min-width: 1024px) {
+        .heading-line{
+            margin-bottom: 30px;
+        }
+
+        &__btns{
+            flex-direction: row;
+            gap: 30px;
+        }
+    }
+}

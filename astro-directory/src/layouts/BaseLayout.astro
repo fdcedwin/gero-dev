@@ -1,0 +1,85 @@
+---
+import { SITE_INDEXABLE } from "astro:env/server";
+import Header, { type NavKey } from "@/components/site/Header.astro";
+import Footer from "@/components/site/Footer.astro";
+import { serializeJsonLd } from "@/lib/json-ld";
+import { SITE } from "@/site";
+import "@/styles/main.scss";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Absolute or root-relative URL of the share image (1200×630). */
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: "website" | "business.business";
+  bodyClass?: string;
+  currentNav?: NavKey;
+  jsonLd?: object[];
+  noindex?: boolean;
+}
+
+const {
+  title = SITE.defaultTitle,
+  description = SITE.defaultDescription,
+  ogImage = SITE.ogImage,
+  ogImageAlt = "What's On Gero — Geraldton's local events and business guide",
+  ogType = "website",
+  bodyClass,
+  currentNav,
+  jsonLd = [],
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site!;
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImageUrl = new URL(ogImage, site).href;
+const robots = SITE_INDEXABLE && !noindex ? "index, follow" : "noindex, nofollow";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <!-- JACK TO ADD GOOGLE TAG MANAGER SCRIPT HERE (and add its hashes/domains to security.csp in astro.config.mjs) -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content={robots} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.author} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- TODO: favicons – add favicon files to /public and link them here -->
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:locale" content={SITE.locale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    {jsonLd.map((data) => (
+      // eslint-disable-next-line astro/no-set-html-directive -- serializeJsonLd escapes </script> and friends
+      <script type="application/ld+json" set:html={serializeJsonLd(data)} />
+    ))}
+  </head>
+
+  <body id="body" class={bodyClass}>
+    <Header current={currentNav} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

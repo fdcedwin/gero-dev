@@ -1,0 +1,44 @@
+.location {
+    padding: 0;
+    gap: 0;
+
+    &__item {
+        display: flex;
+        align-items: flex-start;
+        align-self: stretch;
+        gap: 10px;
+        color: var(--color-blue-900);
+        font-size: clamp(12px, 3vw , 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    &__top {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        align-self: stretch;
+    }
+
+    &__map {
+        width: 100%;
+    }
+
+    @media (min-width: 1024px) {
+        & {
+            display: flex;
+            flex-direction: row;
+        }
+
+        &__top {
+            flex: 1;
+        }
+
+        &__map {
+            width: 50%;
+        }
+    }
+}

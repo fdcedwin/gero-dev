@@ -1,0 +1,23 @@
+.heading-with-line {
+     color: var(--color-primary-dark);
+     font-size: clamp(22px, 5vw, 30px);
+     font-weight: 600;
+     line-height: normal;
+     margin-bottom: 30px;
+     display: flex;
+     flex-direction: column;
+     gap: 10px;
+
+     &::after {
+         content: '';
+         height: 2px;
+         background-color: var(--color-accent);
+         width: 50px;
+         display: block;
+         border-radius: 2px;
+     }
+
+     @media (min-width: 1024px) {
+         margin-bottom: 20px;
+     }
+ }

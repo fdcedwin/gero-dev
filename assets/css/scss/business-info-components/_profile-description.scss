@@ -1,0 +1,35 @@
+.profile-description {
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+
+    &-container{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &__heading {
+        color: var(--color-blue-900);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 110%;
+    }
+
+    &__copy {
+        color: var(--color-neutral-500);
+        font-family: var(--font, Poppins);
+        font-size: clamp(12px, 3vw, 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    @media (min-width: 1024px) {
+
+    }
+}

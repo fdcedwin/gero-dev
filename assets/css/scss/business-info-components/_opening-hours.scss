@@ -1,0 +1,27 @@
+.opening-hours {
+    &__item {
+        display: flex;
+        align-items: flex-start;
+        gap: 30px;
+        align-self: stretch;
+    }
+
+    &__day {
+        color: var(--color-neutral-500);
+        font-size: clamp(12px, 3vw, 14px);
+        line-height: normal;
+        min-width: 72px;
+    }
+
+    &__time {
+        color: var(--color-blue-900);
+        font-size: clamp(12px, 3vw, 14px);
+        line-height: normal;
+    }
+
+    @media (min-width: 1024px) {
+        &__day {
+            min-width: 83px;
+        }
+    }
+}

@@ -1,0 +1,13 @@
+/* Info-box and footer headings were <h4>; they are <h2> now for a correct heading outline.
+   Base h2 uses var(--font-weight-bold), which is not defined, so restore the h4 weight here. */
+.info-box h2,
+.footer__heading,
+.suggested-bcard__heading {
+    font-weight: 700;
+}
+
+/* Astro's <Image> sets width/height attributes; let CSS control the rendered height. */
+.location__map {
+    height: auto;
+    object-fit: cover;
+}

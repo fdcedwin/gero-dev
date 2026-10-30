@@ -1,0 +1,62 @@
+---
+import type { Page } from "astro";
+import { categoryHref, categoryIds, type Business, type Category } from "@/lib/businesses";
+import BusinessCard from "./BusinessCard.astro";
+
+interface Props {
+  heading: string;
+  page: Page<Business>;
+  categoryMap: Map<string, Category>;
+  /** Categories to offer as filters (only ones that have listings). */
+  filterCategories: Category[];
+  activeCategoryId?: string | undefined;
+}
+
+const { heading, page, categoryMap, filterCategories, activeCategoryId } = Astro.props;
+
+const categoriesOf = (business: Business) =>
+  categoryIds(business)
+    .map((id) => categoryMap.get(id))
+    .filter((category): category is Category => category !== undefined);
+---
+
+<section class="directory">
+  <div class="container">
+    <h1 class="heading-with-line">{heading}</h1>
+
+    <nav class="directory__filters" aria-label="Categories">
+      <a href="/directory/" class:list={["category", { "category--active": !activeCategoryId }]}>
+        All
+      </a>
+      {filterCategories.map((category) => (
+        <a
+          href={categoryHref(category.id)}
+          class:list={["category", { "category--active": category.id === activeCategoryId }]}
+          aria-current={category.id === activeCategoryId ? "page" : undefined}
+        >
+          {category.data.name}
+        </a>
+      ))}
+    </nav>
+
+    <p class="directory__count">
+      Showing {page.start + 1}–{page.end + 1} of {page.total} businesses
+    </p>
+
+    <div class="directory__grid">
+      {page.data.map((business) => (
+        <BusinessCard business={business} categories={categoriesOf(business)} headingLevel="h2" />
+      ))}
+    </div>
+
+    {page.lastPage > 1 && (
+      <nav class="directory__pagination" aria-label="Pagination">
+        {page.url.prev ? <a href={page.url.prev}>← Previous</a> : <span />}
+        <span>
+          Page {page.currentPage} of {page.lastPage}
+        </span>
+        {page.url.next ? <a href={page.url.next}>Next →</a> : <span />}
+      </nav>
+    )}
+  </div>
+</section>

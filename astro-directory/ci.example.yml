@@ -1,0 +1,51 @@
+# Example CI for the Astro experiment. To enable it, copy this file to
+# .github/workflows/astro-directory.yml at the repo root.
+name: Astro directory CI
+
+on:
+  pull_request:
+    paths: ["astro-directory/**"]
+  push:
+    branches: [main]
+    paths: ["astro-directory/**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: astro-directory
+    steps:
+      # Actions pinned to commit SHAs (tags can be moved; SHAs can't).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: astro-directory/.nvmrc
+          cache-dependency-path: astro-directory/package-lock.json
+          cache: npm
+
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm test
+      # Optimised images are cached between runs so builds stay fast as listings grow.
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: astro-directory/node_modules/.astro/assets
+          key: astro-assets-${{ hashFiles('astro-directory/src/content/**', 'astro-directory/src/assets/**') }}
+          restore-keys: astro-assets-
+
+      # `build` runs `astro check` first; invalid listing data fails here.
+      - run: npm run build

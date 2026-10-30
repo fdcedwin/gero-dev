@@ -1,0 +1,90 @@
+---
+import type { ImageMetadata } from "astro";
+import { getImage } from "astro:assets";
+
+interface Props {
+  images: { src: ImageMetadata; alt: string }[];
+}
+
+const { images } = Astro.props;
+
+// Pre-optimise every size at build time; the client script only swaps URLs.
+const optimised = await Promise.all(
+  images.map(async ({ src, alt }) => ({
+    alt,
+    main: await getImage({ src, width: 1200, format: "webp" }),
+    thumb: await getImage({ src, width: 200, height: 200, fit: "cover", format: "webp" }),
+  })),
+);
+const first = optimised[0];
+---
+
+{first && (
+  <div class="gallery">
+    <div class="gallery__wrapper">
+      <img
+        id="mainImage"
+        class="gallery__main-image"
+        src={first.main.src}
+        alt={first.alt}
+        width={first.main.attributes.width}
+        height={first.main.attributes.height}
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+
+    {optimised.length > 1 && (
+      <div class="thumbnail-row">
+        {optimised.map((image, i) => (
+          <button
+            type="button"
+            class:list={["thumbnail", { active: i === 0 }]}
+            data-image={image.main.src}
+            data-alt={image.alt}
+            aria-label={`Show photo: ${image.alt}`}
+            aria-pressed={i === 0 ? "true" : "false"}
+          >
+            <img
+              src={image.thumb.src}
+              alt=""
+              width={image.thumb.attributes.width}
+              height={image.thumb.attributes.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
+<script>
+  const mainImage = document.getElementById("mainImage") as HTMLImageElement | null;
+  const thumbnails = document.querySelectorAll<HTMLButtonElement>(".thumbnail");
+
+  thumbnails.forEach((thumbnail) => {
+    thumbnail.addEventListener("click", () => {
+      const { image, alt } = thumbnail.dataset;
+      if (!mainImage || !image) return;
+
+      // Remove selected state from all thumbnails, then select the clicked one
+      thumbnails.forEach((item) => {
+        item.classList.remove("active");
+        item.setAttribute("aria-pressed", "false");
+      });
+      thumbnail.classList.add("active");
+      thumbnail.setAttribute("aria-pressed", "true");
+
+      // Small fade animation
+      mainImage.style.opacity = "0";
+
+      setTimeout(() => {
+        mainImage.src = image;
+        mainImage.alt = alt ?? "Selected gallery image";
+        mainImage.style.opacity = "1";
+      }, 150);
+    });
+  });
+</script>

@@ -1,0 +1,31 @@
+# Directory categories. The key is the URL slug: /directory/category/<key>/
+# `parent` is optional and must be another key in this file.
+
+food-dining:
+  name: Food & Dining
+restaurants:
+  name: Restaurants
+  parent: food-dining
+cafes:
+  name: Cafés & Coffee Shops
+  parent: food-dining
+health-beauty:
+  name: Health & Beauty
+salons:
+  name: Salons
+  parent: health-beauty
+fitness:
+  name: Gyms & Fitness
+  parent: health-beauty
+trades-services:
+  name: Trades & Services
+plumbers:
+  name: Plumbers
+  parent: trades-services
+marine:
+  name: Marine Services
+  parent: trades-services
+accommodation:
+  name: Accommodation
+shopping:
+  name: Shopping

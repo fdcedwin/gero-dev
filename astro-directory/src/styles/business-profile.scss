@@ -1,0 +1,106 @@
+@use 'business-info-components/business-body';
+@use 'business-info-components/contact-info';
+@use 'business-info-components/info-box';
+@use 'business-info-components/location';
+@use 'business-info-components/opening-hours';
+@use 'business-info-components/profile-description';
+@use 'business-info-components/admin-controls';
+
+.business-profile {
+    padding-top: 0;
+    padding-bottom: 20px;
+
+    &-hero {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 360px;
+        z-index: -1;
+        padding: 0;
+
+        &__image {
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+
+    .container {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+
+
+    &__right,
+    &__left {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    &-hero__image {
+        height: 360px;
+    }
+
+
+    .report-link {
+        color: var(--color-blue-600);
+        font-size: clamp(12px, 3vw, 14px);
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    &-container {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .info-box-container {
+        margin-top: 24px;
+    }
+
+    @media (min-width: 1140px) {
+
+        &{
+            padding-bottom: 50px;
+        }
+
+        &-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            .gallery {
+                grid-column: 1;
+            }
+
+            .business-body {
+                grid-row: 1 / span 2;
+                grid-column: 2;
+            }
+
+            .profile-description-container {
+                grid-column: 1;
+            }
+
+        }
+
+        .suggested-business,
+        .admin-controls {
+            width: 100%;
+        }
+    }
+}

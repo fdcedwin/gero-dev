@@ -1,0 +1,20 @@
+/* Hides content visually while keeping it available to screen readers. */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* The mobile menu toggle is a <button> for keyboard/screen-reader access; drop native button styling. */
+.header button.menu-icon {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}

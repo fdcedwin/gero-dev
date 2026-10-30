@@ -1,0 +1,121 @@
+.wave {
+    margin-top: -100px;
+    position: relative;
+    z-index: 2;
+    line-height: 0;
+    padding: 0;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.categories {
+    --box-bg-color: #fff;
+    --box-bg-color-hover: var(--color-primary);
+    --box-border-color: var(--color-blue-200);
+    --box-border-color-hover: var(--color-primary);
+
+    --box-title-color: var(--color-secondary);
+    --box-title-color-hover: #fff;
+
+    --icon-top-color: var(--color-primary);
+    --icon-bot-color: var(--color-accent);
+    --icon-top-color-hover: #fff;
+    --icon-bot-color-hover: var(--color-orange-300);
+
+    padding: 20px 24px 50px;
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+    top: -1px;
+
+    &__heading {
+        color: var(--box-title-color);
+        text-align: center;
+        font-size: clamp(22px, 5vw, 30px);
+        font-weight: 600;
+        line-height: normal;
+        margin-bottom: 20px;
+    }
+
+    &__cards {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    &__card {
+        padding: 30px 5px;
+        width: calc(50% - 10px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border-radius: 10px;
+        border: 2px solid var(--box-border-color);
+        background: var(--box-bg-color);
+        text-align: center;
+        transition: .5s all;
+
+        svg {
+            height: 60px;
+        }
+
+        &-title {
+            font-size: 14px;
+            transition: .5s all;
+            font-weight: 600;
+            color: var(--color-primary-dark);
+        }
+
+        .icon-color-top {
+            stop-color: var(--icon-top-color);
+            transition: .2s all;
+        }
+
+        .icon-color-bottom {
+            stop-color: var(--icon-bot-color);
+            transition: .5s all;
+        }
+
+        &:hover {
+            background-color: var(--box-bg-color-hover);
+            border-color: var(--box-border-color-hover);
+
+            .icon-color-top {
+                stop-color: var(--icon-top-color-hover);
+            }
+
+            .icon-color-bottom {
+                stop-color: var(--icon-bot-color-hover);
+            }
+
+            .categories__card-title {
+                color: var(--box-title-color-hover);
+            }
+
+        }
+
+        &--last {
+            &:hover path {
+                fill: var(--color-orange-300);
+            }
+        }
+
+        @media (min-width: 768px) {
+            width: calc(25% - 15px);
+        }
+
+        @media (min-width: 1140px) {
+            width: calc(12.5% - 17.5px);
+        }
+
+    }
+
+    @media (min-width: 1140px) {
+        padding-top: 0;
+    }
+}

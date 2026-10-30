@@ -1,0 +1,156 @@
+---
+import { SITE } from "@/site";
+
+// Build-time year: the site is rebuilt whenever listings change, so no client script is needed.
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__left">
+        <div class="footer__logo">
+          <img src="/images/logo.svg" alt={SITE.name} />
+        </div>
+
+        <div class="footer__left-copy">
+          <p>
+            Your local guide to what’s up in Geraldton. Discover businesses, events, deals, and
+            more!
+          </p>
+
+          <ul>
+            <li>
+              <a
+                rel="noopener noreferrer"
+                href={SITE.social.facebook}
+                target="_blank"
+                aria-label="Visit What’s On Gero on Facebook"
+              >
+                <img src="/images/FB.svg" alt="" />
+              </a>
+            </li>
+            <li>
+              <a
+                rel="noopener noreferrer"
+                href={SITE.social.instagram}
+                target="_blank"
+                aria-label="Visit What’s On Gero on Instagram"
+              >
+                <img src="/images/IG.svg" alt="" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__col footer__col--link">
+        <h2 class="footer__heading">QUICK LINKS</h2>
+        <ul>
+          <li>
+            <a href="/directory/">Directory</a>
+          </li>
+          <li>
+            <a href="#">Events</a>
+          </li>
+          <li>
+            <a href="#">Jobs</a>
+          </li>
+          <li>
+            <a href="#">News & Updates</a>
+          </li>
+          <li>
+            <a href="#">About Us</a>
+          </li>
+          <li>
+            <a href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer__col footer__col--link">
+        <h2 class="footer__heading">FOR BUSINESSES</h2>
+        <ul>
+          <li>
+            <a href="/submit-business/">List Your Business</a>
+          </li>
+          <li>
+            <a href="#">Business Login</a>
+          </li>
+          <li>
+            <a href="#">Post A Job</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer__subscribe">
+        <h2 class="footer__heading">STAY IN THE LOOP</h2>
+        <p>Subscribe to our newsletter for the latest events, deals, and updates in Geraldton!</p>
+        <div class="fieldset">
+          <!-- TODO: wire to a newsletter provider (server-side validation + rate limiting). -->
+          <form action="#" method="post">
+            <label for="footer-email" class="visually-hidden">
+              Email address
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="footer-email"
+              class="fieldset__field"
+              placeholder="Enter your email"
+              autocomplete="email"
+              required
+            />
+            <input class="fieldset__submit" type="submit" value="SUBSCRIBE" />
+          </form>
+        </div>
+      </div>
+
+      <div class="footer__social-links">
+        <h2 class="footer__heading">FOLLOW US</h2>
+
+        <ul>
+          <li>
+            <a
+              rel="noopener noreferrer"
+              href={SITE.social.facebook}
+              target="_blank"
+              aria-label="Visit What’s On Gero on Facebook"
+            >
+              <img src="/images/FB.svg" alt="" />
+            </a>
+          </li>
+          <li>
+            <a
+              rel="noopener noreferrer"
+              href={SITE.social.instagram}
+              target="_blank"
+              aria-label="Visit What’s On Gero on Instagram"
+            >
+              <img src="/images/IG.svg" alt="" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bot">
+      <p>&copy; {year} All rights reserved.</p>
+
+      <ul>
+        <li>
+          <a href="#">Terms & Conditions</a>
+        </li>
+        <li>
+          <a href="#">Privacy Policy</a>
+        </li>
+      </ul>
+      <p>
+        Website{" "}
+        <a href="https://hyperlanedigital.com.au/" target="_blank" rel="noopener noreferrer">
+          Powered by Hyperlane Digital
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>

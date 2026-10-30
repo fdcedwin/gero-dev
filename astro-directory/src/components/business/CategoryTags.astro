@@ -1,0 +1,23 @@
+---
+import { categoryHref, type Category } from "@/lib/businesses";
+
+interface Props {
+  block: string;
+  categories: Category[];
+  /** Highlight the primary (first) category. */
+  highlightPrimary?: boolean;
+}
+
+const { block, categories, highlightPrimary = false } = Astro.props;
+---
+
+<div class={`${block}__categories`}>
+  {categories.map((category, i) => (
+    <a
+      href={categoryHref(category.id)}
+      class:list={["category", { "category--active": highlightPrimary && i === 0 }]}
+    >
+      {category.data.name}
+    </a>
+  ))}
+</div>

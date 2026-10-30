@@ -1,0 +1,197 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import { getImage, Image } from "astro:assets";
+import { render } from "astro:content";
+import defaultHero from "@/assets/default-hero.png";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Breadcrumbs from "@/components/site/Breadcrumbs.astro";
+import Cta from "@/components/site/Cta.astro";
+import BusinessCard from "@/components/business/BusinessCard.astro";
+import BusinessInfo from "@/components/business/BusinessInfo.astro";
+import CategoryTags from "@/components/business/CategoryTags.astro";
+import ContactInfo from "@/components/business/ContactInfo.astro";
+import Gallery from "@/components/business/Gallery.astro";
+import Location from "@/components/business/Location.astro";
+import OpeningHours from "@/components/business/OpeningHours.astro";
+import Rating from "@/components/business/Rating.astro";
+import {
+  businessHref,
+  categoryIds,
+  createRelatedLookup,
+  getCategoryMap,
+  getPublishedBusinesses,
+  type Business,
+  type Category,
+} from "@/lib/businesses";
+import { toOpeningHoursSpecification } from "@/lib/hours";
+import { breadcrumbJsonLd, type BreadcrumbItem } from "@/lib/json-ld";
+import { SITE } from "@/site";
+
+export const getStaticPaths = (async () => {
+  const [businesses, categoryMap] = await Promise.all([getPublishedBusinesses(), getCategoryMap()]);
+  const findRelated = createRelatedLookup(businesses);
+  const categoriesOf = (business: Business) =>
+    categoryIds(business)
+      .map((id) => categoryMap.get(id))
+      .filter((category): category is Category => category !== undefined);
+
+  return businesses.map((business) => ({
+    params: { slug: business.id },
+    props: {
+      business,
+      categories: categoriesOf(business),
+      related: findRelated(business).map((related) => ({
+        business: related,
+        categories: categoriesOf(related),
+      })),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { business, categories, related } = Astro.props;
+const { data } = business;
+const { Content } = await render(business);
+
+const site = Astro.site!;
+const pageUrl = new URL(businessHref(business.id), site).href;
+const shareImage = await getImage({
+  src: data.gallery[0]?.src ?? data.hero ?? defaultHero,
+  width: 1200,
+  height: 630,
+  fit: "cover",
+  format: "jpg",
+});
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { label: "Home", href: "/" },
+  { label: "Directory", href: "/directory/" },
+  { label: data.name },
+];
+
+const localBusiness = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": pageUrl,
+  name: data.name,
+  url: pageUrl,
+  description: data.shortDescription,
+  image: new URL(shareImage.src, site).href,
+  address: { "@type": "PostalAddress", streetAddress: data.location.address, addressCountry: "AU" },
+  ...(data.location.geo && {
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: data.location.geo.lat,
+      longitude: data.location.geo.lng,
+    },
+  }),
+  ...(data.contact.phone && { telephone: data.contact.phone }),
+  ...(data.contact.email && { email: data.contact.email }),
+  ...((data.contact.website || data.contact.facebook || data.contact.instagram) && {
+    sameAs: [data.contact.website, data.contact.facebook, data.contact.instagram].filter(Boolean),
+  }),
+  ...(data.hours && { openingHoursSpecification: toOpeningHoursSpecification(data.hours) }),
+  ...(data.rating && {
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: data.rating.value,
+      reviewCount: data.rating.count,
+    },
+  }),
+};
+---
+
+<BaseLayout
+  title={`${data.name} – ${data.location.suburb} | ${SITE.name}`}
+  description={data.shortDescription}
+  ogImage={shareImage.src}
+  ogImageAlt={data.gallery[0]?.alt ?? data.name}
+  ogType="business.business"
+  bodyClass="body-business-profile"
+  currentNav="directory"
+  jsonLd={[localBusiness, breadcrumbJsonLd(breadcrumbs, site)]}
+>
+  <section class="business-profile-hero">
+    <div class="business-profile-hero__image">
+      <Image
+        src={data.hero ?? defaultHero}
+        alt=""
+        widths={[480, 1024, 1440]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+  </section>
+
+  <Breadcrumbs items={breadcrumbs} />
+
+  <section class="business-profile">
+    <div class="container">
+      <div class="business-profile-container">
+        <Gallery images={data.gallery} />
+
+        <div class="business-body">
+          <h1 class="business-body__title">{data.name}</h1>
+
+          <CategoryTags block="business-body" categories={categories} highlightPrimary />
+
+          <div class="business-body__location">
+            <img src="/images/profile-location-pin.svg" alt="" />
+            <span class="business-body__location-label">{data.location.suburb}</span>
+          </div>
+
+          {data.rating && (
+            <Rating
+              block="business-body"
+              value={data.rating.value}
+              count={data.rating.count}
+              longCount
+            />
+          )}
+
+          <div class="business-body__text">
+            <p>{data.shortDescription}</p>
+          </div>
+
+          <div class="info-box-container">
+            <ContactInfo name={data.name} contact={data.contact} />
+            <Location name={data.name} address={data.location.address} mapImage={data.mapImage} />
+            {data.hours && <OpeningHours hours={data.hours} />}
+          </div>
+        </div>
+
+        <div class="profile-description-container">
+          <div class="profile-description">
+            <h2 class="profile-description__heading">About {data.name}:</h2>
+            <div class="heading-line"></div>
+            <div class="profile-description__copy">
+              <Content />
+            </div>
+          </div>
+
+          <BusinessInfo owner={data.owner} listedSince={data.listedSince} />
+
+          <a href={SITE.reportListingHref} class="report-link">
+            REPORT INCORRECT OR OUTDATED INFO
+          </a>
+        </div>
+      </div>
+
+      {related.length > 0 && (
+        <div class="suggested-business">
+          <h2 class="suggested-business__heading">Suggested Businesses</h2>
+          <div class="heading-line" />
+          <div class="suggested-business__cards">
+            {related.map((item) => (
+              <BusinessCard business={item.business} categories={item.categories} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <Cta />
+</BaseLayout>

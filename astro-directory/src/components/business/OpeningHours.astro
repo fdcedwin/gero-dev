@@ -1,0 +1,22 @@
+---
+import { DAYS, dayLabel, formatDayHours, type WeeklyHours } from "@/lib/hours";
+
+interface Props {
+  hours: WeeklyHours;
+}
+
+const { hours } = Astro.props;
+---
+
+<div class="opening-hours info-box">
+  <h2 class="opening-hours__heading">Opening Hours</h2>
+
+  <dl class="opening-hours__list">
+    {DAYS.map((day) => (
+      <div class="opening-hours__item">
+        <dt class="opening-hours__day">{dayLabel(day)}</dt>
+        <dd class="opening-hours__time">{formatDayHours(hours[day])}</dd>
+      </div>
+    ))}
+  </dl>
+</div>

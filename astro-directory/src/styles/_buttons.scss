@@ -1,0 +1,125 @@
+/* Resuable Button Class */
+.btn {
+    display: inline-block;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+    background-color: var(--btn-primary-color);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 12px 20px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 100%;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    width: 100%;
+
+    &:hover {
+        background-color: var(--color-orange-300);
+        cursor: pointer;
+    }
+
+    &--icon {
+        background-color: transparent;
+        font-weight: 400;
+        box-shadow: none;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 20px 0;
+
+        &::before {
+            content: '';
+            width: 19px;
+            height: 17px;
+            background-size: cover;
+            display: block;
+        }
+
+        &-fav {
+            &::before {
+                background-image: url('/images/icon-heart.svg');
+            }
+        }
+
+        &-login {
+            &::before {
+                background-image: url('/images/icon-user.svg');
+                width: 22px;
+                height: 25px;
+            }
+        }
+
+        &:hover {
+            color: var(--color-accent);
+            background-color: transparent;
+        }
+    }
+
+    &--simple {
+        background-color: transparent;
+        box-shadow: none;
+        color: var(--color-blue-600);
+        font-size: 18px;
+        font-weight: 700;
+        line-height: normal;
+        padding: 0;
+
+        span {
+            color: var(--color-accent);
+        }
+
+        &:hover {
+            background-color: transparent;
+            color: var(--color-accent);
+        }
+    }
+
+    &--red {
+        background-color: var(--color-red-500);
+    }
+
+    &--outline {
+        background-color: transparent;
+        box-shadow: none;
+
+        border: 1px solid var(--color-orange-300);
+        color: var(--color-orange-300);
+
+        &--blue {
+            color: var(--color-blue-600);
+            border-color: var(--color-blue-600);
+
+            &:hover {
+                background-color: var(--color-blue-600);
+                color: #fff;
+            }
+        }
+
+
+    }
+}
+
+@media (min-width: 1024px) {
+    .btn {
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+
+        &--favorite {
+
+            &::before {
+                width: 17px;
+                height: 15px;
+            }
+        }
+
+        &--simple {
+            font-size: 18px;
+            padding: 0;
+        }
+
+    }
+}

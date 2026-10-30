@@ -1,0 +1,587 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Cta from "@/components/site/Cta.astro";
+---
+
+<BaseLayout currentNav="home">
+  <section class="hero">
+    <div class="container">
+      <div class="hero__copy">
+        <span class="hero__copy-eyebrow">WHAT’S ON GERO:</span>
+        <h1 class="hero__copy-heading">What’s Happening in Geraldton, All In One Place.</h1>
+        <div class="hero__copy-text">
+          <p>
+            Discover the best businesses, events, attractions, and local favourites in Geraldton.
+          </p>
+        </div>
+        <div class="hero__search fieldset">
+          <form action="">
+            <input
+              type="search"
+              name="search"
+              id="search"
+              class="fieldset__field"
+              placeholder="What are you looking for? e.g. Restaurants, Mechanic, Plumbing"
+            />
+            <input class="fieldset__submit" type="submit" value="Search" />
+          </form>
+        </div>
+        <div class="hero__tags">
+          <span class="hero__tags-label">Popular searches:</span>
+          <a href="#" class="hero__tags-tag">
+            Restaurants
+          </a>
+          <a href="#" class="hero__tags-tag">
+            Cafes
+          </a>
+          <a href="#" class="hero__tags-tag">
+            Plumbers
+          </a>
+          <a href="#" class="hero__tags-tag">
+            Hotels
+          </a>
+          <a href="#" class="hero__tags-tag">
+            Activities
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__image">
+        <picture>
+          <!-- Desktop -->
+          <source media="(min-width: 980px)" srcset="/images/hero-desktop.jpg" />
+
+          <!-- Tablet -->
+          <source media="(min-width: 768px)" srcset="/images/hero-tablet.jpg" />
+
+          <!-- Mobile (fallback) -->
+          <img src="/images/hero-mobile.jpg" alt="" />
+        </picture>
+      </div>
+    </div>
+  </section>
+
+  <section class="wave">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1440"
+      height="100"
+      viewBox="0 0 1440 100"
+      fill="none"
+    >
+      <path
+        d="M0 100H1440V25C1440 25 1278.82 75 1080 75C881.18 75 558.82 0 360 0C161.18 0 5.22 75 0 75V100Z"
+        fill="white"
+      />
+    </svg>
+  </section>
+
+  <section class="categories">
+    <div class="container">
+      <h2 class="categories__heading">Browse by Category</h2>
+
+      <div class="categories__cards">
+        <div class="categories__card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="60"
+            viewBox="0 0 40 60"
+            fill="none"
+          >
+            <path
+              d="M16.8199 0C15.8496 0 15.0621 0.7875 15.0621 1.75781V11.1703C15.0621 12.2777 14.1609 13.1777 13.0547 13.1777C11.9484 13.1777 11.0473 12.2766 11.0473 11.1703V1.75781C11.0473 0.7875 10.2598 0 9.28945 0C8.31914 0 7.53164 0.7875 7.53164 1.75781V11.1715C7.53164 12.2789 6.63047 13.1789 5.52187 13.1789C4.41328 13.1789 3.51562 12.2789 3.51562 11.1715V1.75781C3.51562 0.7875 2.72812 0 1.75781 0C0.7875 0 0 0.7875 0 1.75781V20.141C0 23.0039 1.39453 25.6137 3.70547 27.1992L2.21719 52.5023C2.10352 54.4406 2.80195 56.3625 4.13437 57.777C5.4668 59.1902 7.34531 60 9.29062 60C11.2359 60 13.1109 59.1891 14.4434 57.7758C15.7746 56.3625 16.473 54.4406 16.3605 52.5012L14.8723 27.1992C17.1844 25.6137 18.5777 23.0039 18.5777 20.141V11.1727V1.75781C18.5777 0.7875 17.7902 0 16.8199 0ZM15.0621 20.141C15.0621 22.0676 13.991 23.7996 12.2684 24.6621C11.6391 24.9762 11.2582 25.6359 11.3004 26.3379L12.852 52.7074C12.9094 53.6848 12.5566 54.6527 11.8863 55.3641C11.2148 56.0754 10.2691 56.4844 9.28828 56.4844C8.30742 56.4844 7.36406 56.0766 6.69258 55.3652C6.02109 54.6527 5.66953 53.6848 5.72695 52.7086L7.27852 26.3379C7.31953 25.6359 6.93867 24.9773 6.31055 24.6621C4.58672 23.7996 3.5168 22.0676 3.5168 20.141V16.3172C4.13906 16.5609 4.81641 16.6945 5.52422 16.6945C6.97852 16.6945 8.30273 16.1297 9.28945 15.2086C10.2762 16.1297 11.6016 16.6945 13.0547 16.6945C13.7625 16.6945 14.4398 16.5609 15.0621 16.3172V20.141ZM37.6148 0C34.5938 0 31.6969 1.1168 29.4562 3.14297C27.2168 5.17031 25.8176 7.9418 25.5164 10.9477L22.6875 39.2379C22.6383 39.7324 22.8 40.2246 23.1328 40.5926C23.4656 40.9605 23.9391 41.1703 24.4359 41.1703H28.1426L27.0152 52.4473C26.8219 54.3738 27.457 56.3027 28.7566 57.7395C30.0562 59.175 31.9125 59.9988 33.8508 59.9988C36.8965 59.9988 39.3738 57.5215 39.3738 54.4758V1.75781C39.3738 0.7875 38.5852 0 37.6137 0H37.6148ZM35.8594 54.477C35.8594 55.5844 34.9582 56.4844 33.8496 56.4844C32.9039 56.4844 31.998 56.0824 31.3641 55.3816C30.7301 54.6809 30.4195 53.7398 30.5145 52.7988L31.677 41.1727H35.8594V54.477ZM35.8594 37.657H26.3801L29.0156 11.2992C29.4 7.46133 32.2184 4.43906 35.8594 3.69375V37.657Z"
+              fill="url(#paint0_linear_50_47)"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_50_47"
+                x1="19.6875"
+                y1="60"
+                x2="19.6875"
+                y2="0"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop class="icon-color-bottom" offset="0.25" stop-color="#FF6C0A" />
+                <stop class="icon-color-top" offset="0.75" stop-color="#1D3B5D" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <h3 class="categories__card-title">Food & Dining</h3>
+        </div>
+
+        <div class="categories__card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="60"
+            height="45"
+            viewBox="0 0 60 45"
+            fill="none"
+          >
+            <path
+              d="M60 25.732C60 24.7455 59.2125 23.9449 58.2422 23.9449H57.0316V21.2261C57.0316 17.36 53.9379 14.2159 50.1363 14.2159H23.2816V11.7246C23.2816 8.84976 20.9813 6.51223 18.1547 6.51223H12.7453C12.1828 6.51223 11.6402 6.60635 11.134 6.77791V1.78711C11.134 0.800625 10.3465 0 9.37617 0H1.75781C0.7875 0 0 0.800625 0 1.78711V33.4368V42.4427C0 43.4291 0.7875 44.2298 1.75781 44.2298C2.72812 44.2298 3.51562 43.4291 3.51562 42.4427V35.2239H56.4844V42.4427C56.4844 43.4291 57.2719 44.2298 58.2422 44.2298C59.2125 44.2298 60 43.4291 60 42.4427V33.4368V25.7344V25.732ZM53.516 21.2261V23.9449H11.1328V17.7889H50.1352C51.9996 17.7889 53.5148 19.3306 53.5148 21.2249L53.516 21.2261ZM12.7441 10.0853H18.1535C19.0418 10.0853 19.7648 10.8204 19.7648 11.7234V14.2147H11.1316V11.7234C11.1316 10.8204 11.8547 10.0853 12.743 10.0853H12.7441ZM3.51562 3.57184H7.61719V16.0018V23.9449H3.51562V3.57184ZM3.51562 27.5191H56.4844V31.6473H3.51562V27.5191Z"
+              fill="url(#paint0_linear_50_76)"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_50_76"
+                x1="30"
+                y1="44.2274"
+                x2="30"
+                y2="-0.00238321"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop class="icon-color-bottom" stop-color="#FF6C0A" />
+                <stop class="icon-color-top" offset="0.75" stop-color="#1D3B5D" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <h3 class="categories__card-title">Accommodation</h3>
+        </div>
+
+        <div class="categories__card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="60"
+            height="60"
+            viewBox="0 0 60 60"
+            fill="none"
+          >
+            <path
+              d="M13.4749 59.9997C11.8214 59.9997 10.1538 59.6962 8.5554 59.0704C8.00345 58.8536 7.5968 58.3743 7.4761 57.7931C7.3554 57.2118 7.5347 56.6095 7.95423 56.1899L13.2675 50.8767L12.7495 47.2521L9.12376 46.7341L3.81048 52.0474C3.39094 52.4669 2.7886 52.6462 2.20735 52.5255C1.62727 52.4036 1.1468 51.9981 0.930007 51.4462C-1.02468 46.4552 0.158914 40.7845 3.94407 36.9993C7.45149 33.4919 12.5773 32.2192 17.2812 33.6056L33.6031 17.2837C32.2167 12.5798 33.4894 7.454 36.9968 3.94658C40.7843 0.15791 46.455 -1.02451 51.446 0.930176C51.998 1.14697 52.4046 1.62627 52.5253 2.20752C52.6472 2.7876 52.4667 3.39111 52.0472 3.81064L46.7339 9.12393L47.2519 12.7485L50.8765 13.2665L56.1898 7.95322C56.6093 7.53369 57.2117 7.35439 57.7929 7.4751C58.373 7.59697 58.8534 8.00244 59.0702 8.55439C61.0249 13.5454 59.8413 19.2161 56.0562 23.0013C53.4827 25.5747 50.0374 26.9446 46.5277 26.9458C45.2538 26.9458 43.9706 26.7653 42.7179 26.3962L26.396 42.7181C27.7824 47.422 26.5085 52.5478 23.0023 56.0552C20.4288 58.6286 16.9847 59.9997 13.4738 59.9997H13.4749ZM12.6652 56.4513C15.5351 56.6856 18.4191 55.6696 20.5179 53.5696C23.3152 50.7724 24.1894 46.5806 22.7445 42.8903C22.4902 42.2399 22.6449 41.5005 23.1382 41.0071L41.0081 23.1372C41.5015 22.6427 42.2409 22.4892 42.8913 22.7435C46.5816 24.1884 50.7734 23.3142 53.5706 20.5169C55.6695 18.4181 56.6855 15.5329 56.4523 12.6642L52.7421 16.3743C52.3507 16.7657 51.7988 16.9497 51.2503 16.8712L45.4507 16.0427C44.6773 15.9325 44.0702 15.3243 43.9589 14.5509L43.1304 8.75127C43.0519 8.204 43.2359 7.65088 43.6273 7.25947L47.3374 3.54932C44.4687 3.31494 41.5847 4.33096 39.4847 6.43096C36.6874 9.22822 35.8132 13.42 37.2581 17.1103C37.5124 17.7606 37.3577 18.5001 36.8644 18.9935L18.9945 36.8634C18.5011 37.3567 17.7616 37.5114 17.1113 37.2571C13.421 35.8122 9.22923 36.6864 6.43079 39.4837C4.33196 41.5825 3.31595 44.4677 3.55032 47.3364L7.26048 43.6263C7.65188 43.2349 8.20501 43.0509 8.75227 43.1294L14.5531 43.9579C15.3265 44.0681 15.9335 44.6763 16.0449 45.4497L16.8734 51.2493C16.9519 51.7966 16.7679 52.3497 16.3765 52.7411L12.6663 56.4513H12.6652Z"
+              fill="url(#paint0_linear_36_214)"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_36_214"
+                x1="4.63899"
+                y1="55.3614"
+                x2="55.3624"
+                y2="4.63799"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop class="icon-color-bottom" stop-color="#FF6C0A" />
+                <stop class="icon-color-top" offset="0.75" stop-color="#1D3B5D" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <h3 class="categories__card-title">Trades & Services</h3>
+        </div>
+
+        <div class="categories__card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="60"
+            height="60"
+            viewBox="0 0 60 60"
+            fill="none"
+          >
+            <path
+              d="M54.6387 5.8218C47.9039 -1.50579 37.1824 -1.91557 30 4.58862C22.8176 -1.91557 12.0961 -1.50451 5.36133 5.8218C1.9043 9.58389 0 14.5843 0 19.9038C0 25.2233 1.9043 30.2237 5.36133 33.9858L28.759 59.4409C29.1023 59.8136 29.5512 60 30 60C30.4488 60 30.8988 59.8136 31.241 59.4409L54.6387 33.9858C58.0957 30.225 60 25.2233 60 19.9038C60 14.5843 58.0957 9.58389 54.6387 5.8218ZM7.84336 8.53071C10.7262 5.39415 14.5137 3.82523 18.3012 3.82523C22.0887 3.82523 25.8762 5.39415 28.759 8.53071C29.4445 9.27624 30.5555 9.27624 31.241 8.53071C37.0078 2.25758 46.3898 2.25758 52.1566 8.53071C54.9492 11.569 56.4867 15.6081 56.4867 19.9038C56.4867 21.391 56.3027 22.8463 55.9453 24.2404H37.0605C36.3047 24.2404 35.6332 24.7676 35.3941 25.5476L33.2051 32.6939L24.5098 13.7749C24.1922 13.083 23.523 12.6681 22.8141 12.723C22.1062 12.7779 21.4969 13.2924 21.273 14.0264L18.143 24.2416H4.05469C3.69844 22.8476 3.51328 21.391 3.51328 19.9051C3.51328 15.6094 5.05078 11.5703 7.84336 8.53199V8.53071ZM30 55.3813L7.84336 31.2769C6.94805 30.3028 6.18164 29.2241 5.55352 28.0688H19.4086C20.1645 28.0688 20.8359 27.5416 21.075 26.7616L23.2641 19.6153L31.9594 38.5343C32.2582 39.1853 32.8687 39.5913 33.5297 39.5913C33.5707 39.5913 33.6129 39.59 33.6551 39.5862C34.3629 39.5313 34.9723 39.0168 35.1961 38.2828L38.3262 28.0675H54.4465C53.8184 29.2241 53.052 30.3016 52.1566 31.2756L30 55.38V55.3813Z"
+              fill="url(#paint0_linear_36_222)"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_36_222"
+                x1="30"
+                y1="60"
+                x2="30"
+                y2="0.000586504"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop class="icon-color-bottom" offset="0.25" stop-color="#FF6C0A" />
+                <stop class="icon-color-top" offset="0.75" stop-color="#1D3B5D" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <h3 class="categories__card-title">Health & Beauty</h3>
+        </div>
+
+        <div class="categories__card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="60"
+            height="60"
+            viewBox="0 0 60 60"
+            fill="none"
+          >
+            <path
+              d="M59.8805 51.762C59.1492 47.6185 54.3246 20.2797 54.3246 20.2797C54.177 19.4395 53.4469 18.8278 52.5938 18.8278H36.7828L35.509 9.06176C35.3953 8.1864 34.6488 7.53135 33.7664 7.53135H27.9926V7.40596C27.9926 3.32214 24.6703 0 20.5863 0C16.5023 0 13.1801 3.32214 13.1801 7.40596V7.53135H7.40625C6.52383 7.53135 5.77734 8.1864 5.66367 9.06176C5.66367 9.06176 0.619922 47.7251 0.0644531 51.9859C0.0210938 52.3151 0 52.6479 0 52.9772C0 54.8521 0.730078 56.6158 2.05781 57.9434C3.38555 59.2699 5.14805 60 7.02305 60H53.127C54.9621 60 56.6883 59.2852 57.9867 57.9868C59.2852 56.6884 60 54.9623 60 53.126C60 52.6714 59.9602 52.2144 59.8805 51.7644V51.762ZM16.6957 7.40596C16.6957 5.26034 18.4406 3.51549 20.5863 3.51549C22.732 3.51549 24.477 5.26034 24.477 7.40596V7.53135H16.6957V7.40596ZM4.54336 55.4556C3.88125 54.7936 3.51562 53.9123 3.51562 52.9749C3.51562 52.7991 3.52734 52.6186 3.55078 52.4394C4.03945 48.6883 8.00859 18.2618 8.94961 11.0468H13.1801V13.0542C13.1801 14.0245 13.9676 14.8119 14.9379 14.8119C15.9082 14.8119 16.6957 14.0245 16.6957 13.0542V11.0468H24.477V13.0542C24.477 14.0245 25.2645 14.8119 26.2348 14.8119C27.2051 14.8119 27.9926 14.0245 27.9926 13.0542V11.0468H32.223L33.2379 18.8278H26.2348C25.3816 18.8278 24.6516 19.4406 24.5039 20.2797C24.5039 20.2797 19.6793 47.6185 18.9469 51.7632C18.8684 52.212 18.8285 52.669 18.8285 53.1249C18.8285 54.3201 19.1332 55.4674 19.7039 56.4822H7.02187C6.08555 56.4822 5.20547 56.1177 4.54219 55.4556H4.54336ZM55.5012 55.499C54.8672 56.133 54.0234 56.4833 53.127 56.4833H25.7016C24.8051 56.4833 23.9625 56.1341 23.3273 55.499C22.6934 54.865 22.343 54.0213 22.343 53.1237C22.343 52.8729 22.3652 52.6198 22.4086 52.3726C23.0379 48.8055 26.7012 28.0501 27.709 22.3421H51.1184C52.1262 28.0501 55.7883 48.8043 56.4176 52.3702C56.4609 52.6186 56.4832 52.8718 56.4832 53.1237C56.4832 54.0202 56.134 54.8627 55.4988 55.4978L55.5012 55.499ZM46.8211 28.1169V30C46.8211 31.978 46.0512 33.8377 44.652 35.2357C43.2516 36.6349 41.3918 37.406 39.4148 37.406C35.3297 37.406 32.0086 34.085 32.0086 30.0023V28.118C32.0086 27.1478 32.7961 26.3603 33.7664 26.3603C34.7367 26.3603 35.5242 27.1478 35.5242 28.118V30.0023C35.5242 32.1468 37.2691 33.8905 39.4125 33.8905C40.4531 33.8905 41.4305 33.485 42.1664 32.7503C42.9 32.0167 43.3055 31.0394 43.3055 30V28.1169C43.3055 27.1466 44.093 26.3591 45.0633 26.3591C46.0336 26.3591 46.8211 27.1466 46.8211 28.1169Z"
+              fill="url(#paint0_linear_36_231)"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_36_231"
+                x1="30"
+                y1="59.9977"
+                x2="30"
+                y2="0"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop class="icon-color-bottom" stop-color="#FF6C0A" />
+                <stop class="icon-color-top" offset="0.75" stop-color="#1D3B5D" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <h3 class="categories__card-title">Shopping</h3>
+        </div>
+
+        <div class="categories__card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="60"
+            height="46"
+            viewBox="0 0 60 46"
+            fill="none"
+          >
+            <path
+              d="M54.7266 7.03125H41.6332L39.5754 2.91562C38.6766 1.11797 36.8695 0 34.8586 0H25.1414C23.1305 0 21.3234 1.1168 20.4246 2.91562L18.3668 7.03125H15.2344V1.75781C15.2344 0.7875 14.4469 0 13.4766 0H6.44531C5.475 0 4.6875 0.7875 4.6875 1.75781V7.06406C2.0543 7.35703 0 9.59531 0 12.3047V40.4297C0 43.3371 2.36602 45.7031 5.27344 45.7031H54.7266C57.634 45.7031 60 43.3371 60 40.4297V12.3047C60 9.39727 57.634 7.03125 54.7266 7.03125ZM8.20312 3.51562H11.7188V7.03125H8.20312V3.51562ZM30 42.1875C23.2148 42.1875 17.6953 36.668 17.6953 29.8828C17.6953 23.0977 23.2148 17.5781 30 17.5781C36.7852 17.5781 42.3047 23.0977 42.3047 29.8828C42.3047 36.668 36.7852 42.1875 30 42.1875ZM56.4844 40.4297C56.4844 41.3988 55.6957 42.1875 54.7266 42.1875H39.9316C43.5211 39.2848 45.8203 34.848 45.8203 29.8828C45.8203 21.1594 38.7234 14.0625 30 14.0625C21.2766 14.0625 14.1797 21.1594 14.1797 29.8828C14.1797 34.848 16.4789 39.2848 20.0684 42.1875H5.27344C4.3043 42.1875 3.51562 41.3988 3.51562 40.4297V12.3047C3.51562 11.3355 4.3043 10.5469 5.27344 10.5469H19.4531C20.1187 10.5469 20.7281 10.1707 21.0258 9.57539L23.5699 4.48711C23.8699 3.88828 24.4723 3.51562 25.1426 3.51562H34.8598C35.5301 3.51562 36.1324 3.88828 36.4324 4.48711L38.9766 9.57539C39.2742 10.1707 39.8824 10.5469 40.5492 10.5469H54.7289C55.698 10.5469 56.4867 11.3355 56.4867 12.3047V40.4297H56.4844ZM52.9652 15.8203C52.9371 18.1547 49.4496 18.1559 49.4566 15.8203C49.4848 13.4859 52.9711 13.4848 52.9652 15.8203ZM10.5434 15.8203C10.5152 18.1547 7.02773 18.1559 7.03477 15.8203C7.06289 13.4859 10.5492 13.4848 10.5434 15.8203ZM35.2734 8.78906C35.2734 9.75937 34.4859 10.5469 33.5156 10.5469H26.4844C25.5141 10.5469 24.7266 9.75937 24.7266 8.78906C24.7266 7.81875 25.5141 7.03125 26.4844 7.03125H33.5156C34.4859 7.03125 35.2734 7.81875 35.2734 8.78906ZM30 21.0938C25.1531 21.0938 21.2109 25.0371 21.2109 29.8828C21.2109 34.7285 25.1531 38.6719 30 38.6719C34.8469 38.6719 38.7891 34.7285 38.7891 29.8828C38.7891 25.0371 34.8469 21.0938 30 21.0938ZM30 35.1562C27.0926 35.1562 24.7266 32.7902 24.7266 29.8828C24.7266 26.9754 27.0926 24.6094 30 24.6094C32.9074 24.6094 35.2734 26.9754 35.2734 29.8828C35.2734 32.7902 32.9074 35.1562 30 35.1562Z"
+              fill="url(#paint0_linear_36_239)"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_36_239"
+                x1="30"
+                y1="45.7031"
+                x2="30"
+                y2="0"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop class="icon-color-bottom" stop-color="#FF6C0A" />
+                <stop class="icon-color-top" offset="0.75" stop-color="#1D3B5D" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <h3 class="categories__card-title">Things To Do</h3>
+        </div>
+
+        <div class="categories__card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="61"
+            height="60"
+            viewBox="0 0 61 60"
+            fill="none"
+          >
+            <path
+              d="M52.9711 43.9992C55.9734 41.959 57.9492 38.5172 57.9492 34.6219C57.9492 28.3734 52.8656 23.2898 46.6184 23.2898C45.1969 23.2898 43.8352 23.5535 42.5801 24.034C40.9219 22.4918 38.9953 21.2801 36.9141 20.4492C39.709 18.3832 41.5254 15.0656 41.5254 11.332C41.5254 5.08359 36.4418 0 30.1945 0C23.9473 0 18.8637 5.08359 18.8637 11.332C18.8637 15.0598 20.673 18.3715 23.4598 20.4387C21.3691 21.2695 19.4332 22.4836 17.768 24.0316C16.5117 23.5535 15.1488 23.291 13.7262 23.291C7.44375 23.291 2.33203 28.4027 2.33203 34.6852C2.33203 38.5676 4.28438 42.0023 7.25977 44.0602C2.94258 46.3746 0 50.9309 0 56.1621V58.2422C0 59.2125 0.7875 60 1.75781 60H58.5844C59.5547 60 60.3422 59.2125 60.3422 58.2422V56.1621C60.3422 50.8852 57.348 46.2949 52.9711 43.9992ZM54.4336 34.6219C54.4336 38.932 50.9273 42.4371 46.6184 42.4371C42.3094 42.4371 38.8031 38.9309 38.8031 34.6219C38.8031 30.3129 42.3094 26.8055 46.6184 26.8055C50.9273 26.8055 54.4336 30.3117 54.4336 34.6219ZM30.1934 3.51562C34.5035 3.51562 38.0086 7.02187 38.0086 11.332C38.0086 15.6422 34.5023 19.1473 30.1934 19.1473C25.8844 19.1473 22.3781 15.641 22.3781 11.332C22.3781 7.02305 25.8844 3.51562 30.1934 3.51562ZM30.1711 22.6629C33.5824 22.6629 36.7863 23.8031 39.3832 25.9066C36.8812 27.9867 35.2863 31.1215 35.2863 34.6207C35.2863 38.516 37.2621 41.9578 40.2645 43.998C35.8863 46.2938 32.8934 50.884 32.8934 56.1609V56.4832H27.45V56.1609C27.45 50.9297 24.5074 46.3734 20.1914 44.0578C23.1656 42 25.1191 38.5652 25.1191 34.6828C25.1191 31.1508 23.5031 27.9879 20.9719 25.8973C23.5664 23.7996 26.7656 22.6629 30.1723 22.6629H30.1711ZM5.84648 34.6828C5.84648 30.3387 9.38086 26.8043 13.725 26.8043C18.0691 26.8043 21.6035 30.3387 21.6035 34.6828C21.6035 38.6508 18.6539 41.9414 14.8336 42.4816C14.468 42.4523 14.0988 42.4371 13.7262 42.4371C13.3535 42.4371 12.9844 42.4523 12.6187 42.4816C8.79727 41.9414 5.84883 38.6508 5.84883 34.6828H5.84648ZM3.51562 56.1609C3.51562 50.9227 7.48125 46.5938 12.5684 46.0172C12.9492 46.0559 13.3348 46.0758 13.725 46.0758C14.1152 46.0758 14.5008 46.0559 14.8816 46.0172C19.9688 46.5938 23.9344 50.9227 23.9344 56.1609V56.4832H3.51562V56.1609ZM56.8266 56.4832H36.4078V56.1609C36.4078 50.5312 40.9875 45.9516 46.6172 45.9516C52.2469 45.9516 56.8266 50.5312 56.8266 56.1609V56.4832Z"
+              fill="url(#paint0_linear_36_284)"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_36_284"
+                x1="30.1711"
+                y1="60"
+                x2="30.1711"
+                y2="0"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop class="icon-color-bottom" stop-color="#FF6C0A" />
+                <stop class="icon-color-top" offset="0.75" stop-color="#1D3B5D" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <h3 class="categories__card-title">Community</h3>
+        </div>
+
+        <div class="categories__card categories__card--last">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="60"
+            height="60"
+            viewBox="0 0 60 60"
+            fill="none"
+          >
+            <path
+              d="M14.1211 0C6.32227 0 0 6.32227 0 14.1211C0 21.9199 6.32227 28.2422 14.1211 28.2422C21.9199 28.2422 28.2422 21.9199 28.2422 14.1211C28.2422 6.32227 21.9199 0 14.1211 0ZM14.1211 24.7266C8.27344 24.7266 3.51562 19.9688 3.51562 14.1211C3.51562 8.27344 8.27344 3.51562 14.1211 3.51562C19.9688 3.51562 24.7266 8.27344 24.7266 14.1211C24.7266 19.9688 19.9688 24.7266 14.1211 24.7266ZM45.8789 28.2422C53.6777 28.2422 60 21.9199 60 14.1211C60 6.32227 53.6777 0 45.8789 0C38.0801 0 31.7578 6.32227 31.7578 14.1211C31.7578 21.9199 38.0801 28.2422 45.8789 28.2422ZM45.8789 3.51562C51.7266 3.51562 56.4844 8.27344 56.4844 14.1211C56.4844 19.9688 51.7266 24.7266 45.8789 24.7266C40.0312 24.7266 35.2734 19.9688 35.2734 14.1211C35.2734 8.27344 40.0312 3.51562 45.8789 3.51562ZM14.1211 31.7578C6.32227 31.7578 0 38.0801 0 45.8789C0 53.6777 6.32227 60 14.1211 60C21.9199 60 28.2422 53.6777 28.2422 45.8789C28.2422 38.0801 21.9199 31.7578 14.1211 31.7578ZM14.1211 56.4844C8.27344 56.4844 3.51562 51.7266 3.51562 45.8789C3.51562 40.0312 8.27344 35.2734 14.1211 35.2734C19.9688 35.2734 24.7266 40.0312 24.7266 45.8789C24.7266 51.7266 19.9688 56.4844 14.1211 56.4844ZM45.8789 31.7578C38.0801 31.7578 31.7578 38.0801 31.7578 45.8789C31.7578 53.6777 38.0801 60 45.8789 60C53.6777 60 60 53.6777 60 45.8789C60 38.0801 53.6777 31.7578 45.8789 31.7578ZM45.8789 56.4844C40.0312 56.4844 35.2734 51.7266 35.2734 45.8789C35.2734 40.0312 40.0312 35.2734 45.8789 35.2734C51.7266 35.2734 56.4844 40.0312 56.4844 45.8789C56.4844 51.7266 51.7266 56.4844 45.8789 56.4844Z"
+              fill="#FF6C0A"
+            />
+          </svg>
+
+          <h3 class="categories__card-title">View All</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business-events">
+    <div class="container">
+      <div class="business">
+        <h2 class="heading-with-line business__heading">Featured Businesses</h2>
+        <div class="business__cards-scroll">
+          <div class="business__cards">
+            <a href="#" class="business__card">
+              <div class="business__card-image">
+                <img src="/images/featured-gone-fishin.png" alt="" />
+              </div>
+
+              <div class="business__card-copy">
+                <h3 class="business__card-heading">Gone Fishin’ Fish & Chips</h3>
+                <div class="business__card-category">
+                  <span>Restaurant</span>
+                </div>
+
+                <div class="business__card-address">
+                  <img src="/images/pin.svg" alt="Pin" />
+                  <p>Sunset Beach, Geraldton</p>
+                </div>
+
+                <div class="business__card-rate">
+                  <span class="business__card-rate-text">4.3</span>
+                  <img src="/images/stars.svg" />
+                  <span class="business__card-rate-count">(319)</span>
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="business__card">
+              <div class="business__card-image">
+                <img src="/images/featured-banh-mi-up.png" alt="" />
+              </div>
+
+              <div class="business__card-copy">
+                <h3 class="business__card-heading">Bánh Mì Up</h3>
+                <div class="business__card-category">
+                  <span>Restaurant</span>
+                </div>
+
+                <div class="business__card-address">
+                  <img src="/images/pin.svg" alt="Pin" />
+                  <p>Marine Terrace, Geraldton</p>
+                </div>
+
+                <div class="business__card-rate">
+                  <span class="business__card-rate-text">4.6</span>
+                  <img src="/images/stars.svg" />
+                  <span class="business__card-rate-count">(168)</span>
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="business__card">
+              <div class="business__card-image">
+                <img src="/images/featured-industrial.png" alt="" />
+              </div>
+
+              <div class="business__card-copy">
+                <h3 class="business__card-heading">Industrial Hair Design</h3>
+                <div class="business__card-category">
+                  <span>Salon</span>
+                </div>
+
+                <div class="business__card-address">
+                  <img src="/images/pin.svg" alt="Pin" />
+                  <p>Webberton, Geraldton</p>
+                </div>
+
+                <div class="business__card-rate">
+                  <span class="business__card-rate-text">4.7</span>
+                  <img src="/images/stars.svg" />
+                  <span class="business__card-rate-count">(176)</span>
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="business__card">
+              <div class="business__card-image">
+                <img src="/images/featured-suncity.png" alt="" />
+              </div>
+
+              <div class="business__card-copy">
+                <h3 class="business__card-heading">Suncity Boat Sales & Marine Supplies</h3>
+                <div class="business__card-category">
+                  <span>Marine Services</span>
+                </div>
+
+                <div class="business__card-address">
+                  <img src="/images/pin.svg" alt="Pin" />
+                  <p>Webberton, Geraldton</p>
+                </div>
+
+                <div class="business__card-rate">
+                  <span class="business__card-rate-text">5.0</span>
+                  <img src="/images/stars.svg" />
+                  <span class="business__card-rate-count">(3)</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <a href="#" class="btn btn--simple">
+          VIEW DIRECTORY <span>→</span>
+        </a>
+      </div>
+
+      <div class="upcoming-events">
+        <h2 class="heading-with-line">Upcoming Events</h2>
+
+        <div class="upcoming-events__cards">
+          <a href="#" class="upcoming-events__card">
+            <div class="upcoming-events__card-date">
+              <strong>25</strong> MAY
+            </div>
+
+            <div class="upcoming-events__card-copy">
+              <h4 class="upcoming-events__card-title">Geraldton Twilight Markets</h4>
+              <p>Sun, 25 May - 4:00pm</p>
+              <p>Town Square</p>
+            </div>
+          </a>
+          <hr />
+
+          <a href="#" class="upcoming-events__card">
+            <div class="upcoming-events__card-date">
+              <strong>07</strong> JUN
+            </div>
+
+            <div class="upcoming-events__card-copy">
+              <h4 class="upcoming-events__card-title">Geraldton Boat Show</h4>
+              <p>Sat, 7 Jun - 9:00am</p>
+              <p>Geraldton Marina</p>
+            </div>
+          </a>
+          <hr />
+
+          <a href="#" class="upcoming-events__card">
+            <div class="upcoming-events__card-date">
+              <strong>21</strong> JUN
+            </div>
+
+            <div class="upcoming-events__card-copy">
+              <h4 class="upcoming-events__card-title">Winter Festival Geraldton</h4>
+              <p>Sat, 21 Jun - 10:00am</p>
+              <p>Various Locations</p>
+            </div>
+          </a>
+          <hr />
+
+          <a href="#" class="btn btn--simple">
+            VIEW ALL EVENTS <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="news-update">
+    <div class="container">
+      <h2 class="news-update__heading">News and Updates</h2>
+
+      <div class="news-update__inner">
+        <a href="#" class="news-update__card">
+          <div class="news-update__image">
+            <img
+              src="/images/img-news-3.png"
+              alt="Geraldton nurses upskill in preparation for hospital expansion"
+            />
+          </div>
+
+          <div class="news-update__copy">
+            <h3 class="news-update__copy-title">
+              Geraldton nurses upskill in preparation for hospital expansion
+            </h3>
+            <div class="news-update__date">
+              <span>17 July 2026</span>
+            </div>
+
+            <div class="news-update__text">
+              <p>
+                Just minutes from some of the Midwest’s most pristine beachfronts, three of WA...
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="news-update__card">
+          <div class="news-update__image">
+            <img
+              src="/images/img-news-2.png"
+              alt="Geraldton Dust: Iron ore exports creating a dusty
+              problem"
+            />
+          </div>
+
+          <div class="news-update__copy">
+            <h3 class="news-update__copy-title">
+              VIDEO: Geraldton Dust: Iron ore exports creating a dusty problem
+            </h3>
+            <div class="news-update__date">
+              <span>10 May 2026</span>
+            </div>
+
+            <div class="news-update__text">
+              <p>
+                The export of iron ore out of Geraldton has created jobs and growth but also lots of
+                dust...
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="news-update__card">
+          <div class="news-update__image">
+            <img
+              src="/images/img-news-1.png"
+              alt="Geraldton: The WA coastal city investors can’t ignore anymore"
+            />
+          </div>
+
+          <div class="news-update__copy">
+            <h3 class="news-update__copy-title">
+              Geraldton: The WA coastal city investors can’t ignore anymore
+            </h3>
+            <div class="news-update__date">
+              <span>6 May 2026</span>
+            </div>
+
+            <div class="news-update__text">
+              <p>
+                According to SPI’s FAST 50 report, Geraldton is gaining traction as one of Western
+                Australia’s...
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="news-update__card">
+          <div class="news-update__image">
+            <img
+              src="/images/img-news.png"
+              alt="Western Australia's oldest lighthouse at risk from coastal erosion in Geraldton"
+            />
+          </div>
+
+          <div class="news-update__copy">
+            <h3 class="news-update__copy-title">
+              Western Australia's oldest lighthouse at risk from coastal erosion in Geraldton
+            </h3>
+            <div class="news-update__date">
+              <span>4 Feb 2026</span>
+            </div>
+
+            <div class="news-update__text">
+              <p>
+                The oldest operational lighthouse in Western Australia is in danger of being taken
+                by the waves...
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <a href="#" class="btn--simple news-update__link">
+        VIEW ALL UPDATES <span>→</span>
+      </a>
+    </div>
+  </section>
+
+  <Cta />
+</BaseLayout>

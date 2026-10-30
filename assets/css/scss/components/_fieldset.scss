@@ -1,0 +1,59 @@
+  .fieldset {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+
+      form {
+          display: flex;
+          flex-direction: row;
+          align-items: stretch;
+      }
+
+      &__field {
+          color: var(--color-primary);
+          font-family: Poppins;
+          font-size: clamp(12px, 2vw, 14px);
+          font-weight: 400;
+          line-height: 140%;
+          padding: 12px;
+          border-radius: 10px 0 0 10px;
+          background: #FFF;
+          border: 0;
+          flex: 1;
+          /* 16.8px */
+
+          &::placeholder {
+              color: #A4B7BF;
+              font-style: italic;
+              font-weight: 300;
+              opacity: 1;
+              /* Firefox lowers default placeholder opacity */
+          }
+      }
+
+      &__submit {
+          color: #FFF;
+          font-family: Poppins;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 100%;
+          padding: 14px 25px;
+          border: 0;
+          border-radius: 0 10px 10px 0;
+          background: var(--color-accent);
+          text-transform: uppercase;
+          transition: all .2s;
+
+          &:hover{
+            background-color: var(--color-primary);
+          }
+      }
+
+      @media screen and (min-width: 1024px) {
+        &{
+            margin-left: 0;
+            margin-right: 0;
+        }
+      }
+  }

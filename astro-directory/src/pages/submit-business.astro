@@ -1,0 +1,283 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Cta from "@/components/site/Cta.astro";
+---
+
+<BaseLayout title="List Your Business | What's On Gero">
+  <section class="hero">
+    <div class="container">
+      <div class="hero__copy">
+        <span class="hero__copy-eyebrow">WHAT’S ON GERO:</span>
+        <h1 class="hero__copy-heading">List Your Business</h1>
+        <div class="hero__copy-text">
+          <p>Join Geraldton's local directory and get discovered by locals and visitors.</p>
+        </div>
+      </div>
+
+      <div class="hero__image">
+        <picture>
+          <!-- Desktop -->
+          <source media="(min-width: 980px)" srcset="/images/hero-desktop.jpg" />
+
+          <!-- Tablet -->
+          <source media="(min-width: 768px)" srcset="/images/hero-tablet.jpg" />
+
+          <!-- Mobile (fallback) -->
+          <img src="/images/hero-mobile.jpg" alt="" />
+        </picture>
+      </div>
+    </div>
+  </section>
+
+  <section class="wave">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1440"
+      height="100"
+      viewBox="0 0 1440 100"
+      fill="none"
+    >
+      <path
+        d="M0 100H1440V25C1440 25 1278.82 75 1080 75C881.18 75 558.82 0 360 0C161.18 0 5.22 75 0 75V100Z"
+        fill="white"
+      />
+    </svg>
+  </section>
+
+  <section class="why-list">
+    <div class="container">
+      <div class="why-list-box">
+        <h2 class="why-list-box__heading">Why list with us?</h2>
+        <ul class="why-list-box__items">
+          <li>Reach thousands of locals and visitors.</li>
+          <li>Improve your visibility in local searches.</li>
+          <li>Build trust with genuine customer reviews.</li>
+          <li>Flexible plans to suit every business.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="business-form">
+    <div class="container">
+      <form action="#">
+        <div class="business-form__section">
+          <div class="business-form__text">
+            <h3>Business Details</h3>
+
+            <p>Tell us about your business so we can list it in the directory.</p>
+
+            <div class="heading-line" aria-hidden="true"></div>
+          </div>
+
+          <div class="business-form__fields">
+            <fieldset class="business-form__fieldset">
+              <div class="business-form__fieldset-head">
+                <label for="business-name">
+                  Business Name <span aria-hidden="true">*</span>
+                </label>
+
+                <small class="error none"> Cannot be empty </small>
+              </div>
+
+              <input
+                type="text"
+                class="business-form__fieldset-input"
+                name="business_name"
+                id="business-name"
+                autocomplete="organization"
+                placeholder="e.g. What’s On Gero"
+                required
+              />
+            </fieldset>
+
+            <fieldset class="business-form__fieldset">
+              <div class="business-form__fieldset-head">
+                <label for="category">
+                  Category <span aria-hidden="true">*</span>
+                </label>
+
+                <small class="error none"> Please select a category </small>
+              </div>
+
+              <select
+                class="business-form__fieldset-input business-form__fieldset-select"
+                name="category"
+                id="category"
+                required
+              >
+                <option value="">Select a category</option>
+                <option value="web-design">Web Design</option>
+                <option value="development">Development</option>
+                <option value="marketing">Marketing</option>
+              </select>
+            </fieldset>
+
+            <fieldset class="business-form__fieldset">
+              <div class="business-form__fieldset-head">
+                <label for="short-description">
+                  Short Description <span aria-hidden="true">*</span>
+                </label>
+
+                <small class="error none"> Cannot be empty </small>
+              </div>
+
+              <textarea
+                name="short_description"
+                class="business-form__fieldset-input business-form__fieldset-textarea business-form__fieldset-textarea--short"
+                maxlength="140"
+                id="short-description"
+                placeholder="Write a short description of your business (max. 140 characters)"
+                required
+              ></textarea>
+
+              <div class="textarea-count-wrap">
+                <span class="textarea-count">0</span> / 140
+              </div>
+            </fieldset>
+
+            <fieldset class="business-form__fieldset">
+              <div class="business-form__fieldset-head">
+                <label for="full-description">
+                  Full Description <span aria-hidden="true">*</span>
+                </label>
+
+                <small class="error none"> Cannot be empty </small>
+              </div>
+
+              <textarea
+                name="full_description"
+                class="business-form__fieldset-input business-form__fieldset-textarea business-form__fieldset-textarea--full"
+                maxlength="1000"
+                id="full-description"
+                placeholder="Tell customers about your business, products, and what makes you unique... (max. 1,000 characters)"
+                required
+              ></textarea>
+
+              <div class="textarea-count-wrap">
+                <span class="textarea-count">0</span> / 1,000
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <hr class="blue-line" />
+
+        <div class="business-form__fields">
+          <fieldset class="business-form__fieldset">
+            <div class="business-form__fieldset-head">
+              <label for="phone-number">
+                Phone Number <span aria-hidden="true">*</span>
+              </label>
+
+              <small class="error none"> Invalid phone number </small>
+            </div>
+
+            <input
+              type="tel"
+              class="business-form__fieldset-input"
+              name="phone_number"
+              id="phone-number"
+              autocomplete="tel"
+              inputmode="tel"
+              placeholder="(08) 1234 5678"
+              required
+            />
+          </fieldset>
+
+          <fieldset class="business-form__fieldset">
+            <div class="business-form__fieldset-head">
+              <label for="email-address">
+                Email Address <span aria-hidden="true">*</span>
+              </label>
+
+              <small class="error none"> Invalid email </small>
+            </div>
+
+            <input
+              type="email"
+              class="business-form__fieldset-input"
+              name="email_address"
+              id="email-address"
+              autocomplete="email"
+              placeholder="user@domain.au"
+              required
+            />
+          </fieldset>
+
+          <fieldset class="business-form__fieldset">
+            <div class="business-form__fieldset-head">
+              <label for="website"> Website </label>
+
+              <small class="error none"> Invalid URL </small>
+            </div>
+
+            <input
+              type="url"
+              class="business-form__fieldset-input"
+              name="website"
+              id="website"
+              inputmode="url"
+              placeholder="https://www.yourbusiness.com.au"
+            />
+          </fieldset>
+
+          <fieldset class="business-form__fieldset">
+            <div class="business-form__fieldset-head">
+              <label for="facebook"> Facebook </label>
+
+              <small class="error none"> Invalid Facebook URL </small>
+            </div>
+
+            <input
+              type="url"
+              class="business-form__fieldset-input"
+              name="facebook"
+              id="facebook"
+              inputmode="url"
+              placeholder="https://www.facebook.com/yourbusiness"
+            />
+          </fieldset>
+
+          <fieldset class="business-form__fieldset">
+            <div class="business-form__fieldset-head">
+              <label for="instagram"> Instagram </label>
+
+              <small class="error none"> Invalid Instagram URL </small>
+            </div>
+
+            <input
+              type="url"
+              class="business-form__fieldset-input"
+              name="instagram"
+              id="instagram"
+              inputmode="url"
+              placeholder="https://www.instagram.com/yourbusiness"
+            />
+          </fieldset>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <Cta />
+
+  <script>
+    // multiple textareas with counters
+    const textareas = document.querySelectorAll<HTMLTextAreaElement>(
+      ".business-form__fieldset-textarea",
+    );
+
+    textareas.forEach((textarea) => {
+      const count = textarea.closest(".business-form__fieldset")?.querySelector(".texarea-count");
+      if (!count) return;
+
+      const updateCount = () => {
+        count.textContent = String(textarea.value.length);
+      };
+
+      textarea.addEventListener("input", updateCount);
+      updateCount();
+    });
+  </script>
+</BaseLayout>

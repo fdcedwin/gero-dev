@@ -1,0 +1,94 @@
+ /* Base Style Starts Here */
+ html {
+     scroll-behavior: smooth;
+     font-size: 16px;
+ }
+
+ body {
+     min-height: 100vh;
+     line-height: 1.5;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     color: var(--color-primary);
+     font-family: var(--body-font);
+     padding: 0;
+
+     &.body-business-profile{
+        background-color: #EFF4FA;
+     }
+
+     @media (min-width: 900px) {
+         padding-top: 0;
+     }
+ }
+
+ h1,
+ h2,
+ h3,
+ h4,
+ h5 {
+     font-family: var(--heading-font);
+     font-weight: 700;
+     line-height: 100%;
+ }
+
+ h2 {
+     font-weight: var(--font-weight-bold);
+ }
+
+ a {
+     text-decoration: none;
+ }
+
+ section,
+ footer {
+     padding: clamp(40px, 4vw, 50px) 24px;
+     scroll-margin-top: 69px;
+     width: 100%;
+ }
+
+ main {
+     width: 100%;
+
+     margin-top: 103px;
+
+     @media (min-width: 1025px) {
+         margin-top: 0;
+     }
+ }
+
+ .container {
+     max-width: var(--container-width);
+     width: 100%;
+     margin: 0 auto;
+ }
+
+ .heading-line {
+     width: 50px;
+     height: 3px;
+     border-radius: 4px;
+     background-color: var(--color-orange-500);
+ }
+
+ @media (min-width: 1024px){
+    .mob-only{
+        display: none;
+     }
+     .mob-desktop{
+        display: block;
+     }
+ }
+
+ @media (max-width: 1025px){
+     .mob-only{
+        display: none;
+     }
+     .mob-desktop{
+        display: block;
+     }
+ }
+
+
+
+ /* Base Style Ends Here */

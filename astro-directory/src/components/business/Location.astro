@@ -1,0 +1,33 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+import { mapsHref } from "@/lib/contact";
+
+interface Props {
+  name: string;
+  address: string;
+  mapImage?: ImageMetadata | undefined;
+}
+
+const { name, address, mapImage } = Astro.props;
+---
+
+<div class="location info-box">
+  <div class="location__top">
+    <h2 class="location__heading">Location</h2>
+    <div class="location__item">
+      <img src="/images/icon-location.svg" alt="" />
+      <p>{address}</p>
+    </div>
+    <a
+      href={mapsHref(name, address)}
+      class="info-box__link"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      View on Google Maps
+    </a>
+  </div>
+
+  {mapImage && <Image class="location__map" src={mapImage} alt="" width={612} loading="lazy" />}
+</div>

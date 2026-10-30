@@ -1,0 +1,41 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Cta from "@/components/site/Cta.astro";
+import DirectoryListing from "@/components/business/DirectoryListing.astro";
+import { categoryIds, getCategoryMap, getPublishedBusinesses } from "@/lib/businesses";
+import { SITE } from "@/site";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const [businesses, categoryMap] = await Promise.all([getPublishedBusinesses(), getCategoryMap()]);
+  const usedCategoryIds = new Set(businesses.flatMap(categoryIds));
+  const filterCategories = [...categoryMap.values()]
+    .filter((category) => usedCategoryIds.has(category.id))
+    .sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+  return paginate(businesses, {
+    pageSize: SITE.directoryPageSize,
+    props: { categoryMap, filterCategories },
+  });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page, categoryMap, filterCategories } = Astro.props;
+const pageSuffix = page.currentPage > 1 ? ` – Page ${page.currentPage}` : "";
+---
+
+<BaseLayout
+  title={`Geraldton Business Directory${pageSuffix} | ${SITE.name}`}
+  description="Browse local Geraldton businesses – restaurants, cafés, salons, services and more."
+  currentNav="directory"
+  bodyClass="body-business-profile"
+>
+  <DirectoryListing
+    heading="Business Directory"
+    page={page}
+    categoryMap={categoryMap}
+    filterCategories={filterCategories}
+  />
+  <Cta />
+</BaseLayout>

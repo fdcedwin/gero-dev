@@ -1,0 +1,32 @@
+---
+import { formatRating, starStates } from "@/lib/rating";
+
+interface Props {
+  /** BEM block the markup belongs to, e.g. "business-body" or "suggested-bcard". */
+  block: string;
+  value: number;
+  count: number;
+  /** Show "(610 reviews)" instead of "(610)". */
+  longCount?: boolean;
+}
+
+const { block, value, count, longCount = false } = Astro.props;
+const countLabel = longCount ? `(${count} reviews)` : `(${count})`;
+---
+
+<div class={`${block}__reviews`}>
+  <span class="visually-hidden">
+    Rated {formatRating(value)} out of 5 from {count} reviews
+  </span>
+  <span class={`${block}__reviews-value`} aria-hidden="true">
+    {formatRating(value)}
+  </span>
+  <span class={`${block}__reviews-stars`} aria-hidden="true">
+    {starStates(value).map((state) => (
+      <i class={`star-${state}`} />
+    ))}
+  </span>
+  <span class={`${block}__reviews-count`} aria-hidden="true">
+    {countLabel}
+  </span>
+</div>

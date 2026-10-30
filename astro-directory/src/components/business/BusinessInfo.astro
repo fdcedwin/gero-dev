@@ -1,0 +1,34 @@
+---
+interface Props {
+  owner?: string | undefined;
+  listedSince: Date;
+}
+
+const { owner, listedSince } = Astro.props;
+
+const listedLabel = listedSince.toLocaleDateString("en-AU", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  timeZone: "Australia/Perth",
+});
+---
+
+<div class="opening-hours info-box">
+  <h2 class="opening-hours__heading">Business Info</h2>
+
+  <dl class="opening-hours__list">
+    {owner && (
+      <div class="opening-hours__item">
+        <dt class="opening-hours__day">Owner</dt>
+        <dd class="opening-hours__time">{owner}</dd>
+      </div>
+    )}
+    <div class="opening-hours__item">
+      <dt class="opening-hours__day">Listed Since</dt>
+      <dd class="opening-hours__time">
+        <time datetime={listedSince.toISOString().slice(0, 10)}>{listedLabel}</time>
+      </dd>
+    </div>
+  </dl>
+</div>

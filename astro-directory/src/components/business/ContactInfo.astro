@@ -1,0 +1,69 @@
+---
+import type { Business } from "@/lib/businesses";
+import { displayUrl, telHref } from "@/lib/contact";
+
+interface Props {
+  name: string;
+  contact: Business["data"]["contact"];
+}
+
+const { name, contact } = Astro.props;
+const { phone, website, email, facebook, instagram } = contact;
+const hasDetails = phone || website || email;
+const hasSocial = facebook || instagram;
+---
+
+{(hasDetails || hasSocial) && (
+  <div class="contact-info info-box">
+    <h2 class="contact-info__heading info-box__heading">Contact Info</h2>
+    {hasDetails && (
+      <div class="contact-info__list">
+        {phone && (
+          <div class="contact-info__item">
+            <img src="/images/icon-phone.svg" alt="" />
+            <a href={telHref(phone)}>{phone}</a>
+          </div>
+        )}
+        {website && (
+          <div class="contact-info__item">
+            <img src="/images/icon-web.svg" alt="" />
+            <a href={website} target="_blank" rel="noopener noreferrer">
+              {displayUrl(website)}
+            </a>
+          </div>
+        )}
+        {email && (
+          <div class="contact-info__item">
+            <img src="/images/icon-mail.svg" alt="" />
+            <a href={`mailto:${email}`}>{email}</a>
+          </div>
+        )}
+      </div>
+    )}
+
+    {hasSocial && (
+      <div class="contact-info__social">
+        {facebook && (
+          <a
+            href={facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} on Facebook`}
+          >
+            <img src="/images/profile-fb.svg" alt="" />
+          </a>
+        )}
+        {instagram && (
+          <a
+            href={instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} on Instagram`}
+          >
+            <img src="/images/profile-ig.svg" alt="" />
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+)}

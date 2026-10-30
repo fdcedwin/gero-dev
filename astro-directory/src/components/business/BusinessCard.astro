@@ -1,0 +1,44 @@
+---
+import { Image } from "astro:assets";
+import defaultHero from "@/assets/default-hero.png";
+import { businessHref, type Business, type Category } from "@/lib/businesses";
+import CategoryTags from "./CategoryTags.astro";
+import Rating from "./Rating.astro";
+
+interface Props {
+  business: Business;
+  categories: Category[];
+  headingLevel?: "h2" | "h3";
+}
+
+const { business, categories, headingLevel: Heading = "h3" } = Astro.props;
+const { name, location, rating, gallery } = business.data;
+const cover = gallery[0];
+---
+
+<article class="suggested-bcard">
+  <div class="suggested-bcard__image">
+    <Image
+      src={cover?.src ?? defaultHero}
+      alt=""
+      width={600}
+      height={306}
+      fit="cover"
+      loading="lazy"
+    />
+  </div>
+  <div class="suggested-bcard__copy">
+    <Heading class="suggested-bcard__heading">
+      <a href={businessHref(business.id)}>{name}</a>
+    </Heading>
+
+    <CategoryTags block="suggested-bcard" categories={categories.slice(0, 1)} />
+
+    <div class="suggested-bcard__location">
+      <img src="/images/profile-location-pin.svg" alt="" />
+      <span class="suggested-bcard__location-label">{location.suburb}</span>
+    </div>
+
+    {rating && <Rating block="suggested-bcard" value={rating.value} count={rating.count} />}
+  </div>
+</article>

@@ -1,0 +1,25 @@
+.info-box {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    align-self: stretch;
+    border-radius: 10px;
+    border: 2px solid var(--color-blue-200);
+    background: #FFF;
+    overflow: hidden;
+
+    &-container{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    a {
+        color: var(--color-blue-600);
+        font-size: clamp(12px, 3vw ,14px);
+        font-weight: 600;
+        line-height: normal;
+    }
+}

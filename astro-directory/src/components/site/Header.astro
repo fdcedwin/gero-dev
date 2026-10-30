@@ -1,0 +1,121 @@
+---
+import { SITE } from "@/site";
+
+export type NavKey = "home" | "directory" | "events" | "jobs" | "news" | "about";
+
+interface Props {
+  current?: NavKey | undefined;
+}
+
+const { current } = Astro.props;
+
+// TODO: replace "#" with real routes as the Events/Jobs/News/About pages are built.
+const links: { key: NavKey; label: string; href: string }[] = [
+  { key: "home", label: "HOME", href: "/" },
+  { key: "directory", label: "DIRECTORY", href: "/directory/" },
+  { key: "events", label: "EVENTS", href: "#" },
+  { key: "jobs", label: "JOBS", href: "#" },
+  { key: "news", label: "NEWS", href: "#" },
+  { key: "about", label: "ABOUT", href: "#" },
+];
+---
+
+<header class="header" id="header">
+  <div id="header__container" class="header__container container">
+    <button
+      type="button"
+      id="menu-toggle"
+      class="menu-icon"
+      aria-label="Open menu"
+      aria-controls="header__nav-btn-wrapper"
+      aria-expanded="false"
+    >
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <div class="header__brandname-wrapper mobile-logo">
+      <a href="/">
+        <img class="header__logo" src="/images/logo.svg" alt={`${SITE.name} home`} />
+      </a>
+    </div>
+
+    <div id="header__nav-btn-wrapper" class="header__nav-btn-wrapper">
+      <div class="header__brandname-wrapper desktop-logo">
+        <a href="/">
+          <img class="header__logo" src="/images/logo.svg" alt={`${SITE.name} home`} />
+        </a>
+      </div>
+      <nav class="header__nav" aria-label="Main">
+        <ul class="header__nav-list" id="nav-list">
+          {links.map(({ key, label, href }) => (
+            <li
+              class:list={[
+                "header__nav-list-item",
+                { "header__nav-list-item--active": key === current },
+              ]}
+            >
+              <a
+                class:list={{ "nav__current-tab": key === current }}
+                href={href}
+                aria-current={key === current ? "page" : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div class="right-btns">
+        <a href="/submit-business/" class="btn btn--cta">
+          LIST YOUR BUSINESS
+        </a>
+
+        <div class="social-links">
+          <a
+            rel="noopener noreferrer"
+            href={SITE.social.facebook}
+            target="_blank"
+            aria-label="Visit What’s On Gero on Facebook"
+          >
+            <img src="/images/FB.svg" alt="" />
+          </a>
+          <a
+            rel="noopener noreferrer"
+            href={SITE.social.instagram}
+            target="_blank"
+            aria-label="Visit What’s On Gero on Instagram"
+          >
+            <img src="/images/IG.svg" alt="" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  const header = document.getElementById("header");
+  const headerContainer = document.getElementById("header__container");
+  const navWrapper = document.getElementById("header__nav-btn-wrapper");
+
+  function setMenuOpen(open: boolean) {
+    navWrapper?.classList.toggle("open", open);
+    header?.classList.toggle("open", open);
+    headerContainer?.classList.toggle("open", open);
+    menuToggle?.classList.toggle("cross", open);
+    menuToggle?.setAttribute("aria-expanded", String(open));
+    menuToggle?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+
+  // Toggles menu on mobile
+  menuToggle?.addEventListener("click", () => {
+    setMenuOpen(!navWrapper?.classList.contains("open"));
+  });
+
+  // Closes menu on mobile when a link inside it is clicked
+  navWrapper?.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest("a")) setMenuOpen(false);
+  });
+</script>
