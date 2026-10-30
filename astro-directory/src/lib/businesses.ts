@@ -1,6 +1,12 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import { findUnsafeMarkdown } from "./markdown-safety";
-import { buildCategoryIndex, getRelated, type RelatableItem } from "./related";
+import {
+  buildCategoryIndex,
+  fillSuggestions,
+  getRelated,
+  rankByRating,
+  type RelatableItem,
+} from "./related";
 
 export type Business = CollectionEntry<"businesses">;
 export type Category = CollectionEntry<"categories">;
@@ -59,9 +65,12 @@ export function createRelatedLookup(
 
   const byId = new Map(items.map((item) => [item.id, item]));
   const index = buildCategoryIndex(items);
+  const ranked = rankByRating(items);
 
   return (business, limit = 3) => {
     const item = byId.get(business.id);
-    return item ? getRelated(item, index, limit).map((related) => related.business) : [];
+    if (!item) return [];
+    const related = getRelated(item, index, limit);
+    return fillSuggestions(item, related, ranked, limit).map((suggestion) => suggestion.business);
   };
 }

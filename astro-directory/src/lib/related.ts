@@ -49,3 +49,29 @@ export function getRelated<T extends RelatableItem>(
     .slice(0, limit)
     .map(([candidate]) => candidate);
 }
+
+/** Every item ordered best-first (rating, then name). Used to top up sparse suggestions. */
+export function rankByRating<T extends RelatableItem>(items: T[]): T[] {
+  return [...items].sort(
+    (a, b) => (b.rating ?? 0) - (a.rating ?? 0) || a.name.localeCompare(b.name),
+  );
+}
+
+/**
+ * Top `related` up to `limit` from `ranked` so the section is never half empty.
+ * Skips `item` itself and anything already suggested; keeps category matches first.
+ */
+export function fillSuggestions<T extends RelatableItem>(
+  item: T,
+  related: T[],
+  ranked: T[],
+  limit = 3,
+): T[] {
+  const result = related.slice(0, limit);
+  const taken = new Set([item.id, ...result.map((r) => r.id)]);
+  for (const candidate of ranked) {
+    if (result.length >= limit) break;
+    if (!taken.has(candidate.id)) result.push(candidate);
+  }
+  return result;
+}

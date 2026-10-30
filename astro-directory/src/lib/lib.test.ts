@@ -4,7 +4,13 @@ import { formatDayHours, formatTime, toOpeningHoursSpecification, type WeeklyHou
 import { serializeJsonLd } from "./json-ld";
 import { findUnsafeMarkdown } from "./markdown-safety";
 import { starStates } from "./rating";
-import { buildCategoryIndex, getRelated, type RelatableItem } from "./related";
+import {
+  buildCategoryIndex,
+  fillSuggestions,
+  getRelated,
+  rankByRating,
+  type RelatableItem,
+} from "./related";
 
 describe("hours", () => {
   it("formats 24h times as 12h", () => {
@@ -121,5 +127,14 @@ describe("related", () => {
 
   it("returns nothing when no category is shared", () => {
     expect(getRelated(items[4]!, index)).toEqual([]);
+  });
+
+  it("tops up sparse suggestions with the best-rated others, category matches first", () => {
+    const ranked = rankByRating(items);
+    const related = getRelated(items[4]!, index);
+    expect(fillSuggestions(items[4]!, related, ranked).map((r) => r.id)).toEqual(["c", "b", "d"]);
+
+    const partial = getRelated(items[2]!, index, 1);
+    expect(fillSuggestions(items[2]!, partial, ranked).map((r) => r.id)).toEqual(["b", "d", "a"]);
   });
 });

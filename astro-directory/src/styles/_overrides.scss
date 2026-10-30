@@ -11,3 +11,12 @@
     height: auto;
     object-fit: cover;
 }
+
+/* The original gives each suggested card flex: 1, so fewer than three cards stretch to fill the row.
+   Pin each card to a third of the row (minus the two 30px gaps) so the layout matches the template. */
+@media (min-width: 768px) {
+    .suggested-business .suggested-bcard {
+        flex: 0 1 calc((100% - 60px) / 3);
+        min-width: 0;
+    }
+}
