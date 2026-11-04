@@ -1,0 +1,299 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Cta from "@/components/site/Cta.astro";
+import SearchForm from "@/components/site/SearchForm.astro";
+import { SITE } from "@/site";
+
+// Pagefind's search engine is WebAssembly; allow compiling it on this page only.
+Astro.csp?.insertScriptResource("'self'");
+Astro.csp?.insertScriptResource("'wasm-unsafe-eval'");
+---
+
+<BaseLayout
+  title={`Search the Directory | ${SITE.name}`}
+  description="Search local Geraldton businesses on What's On Gero."
+  currentNav="directory"
+  bodyClass="body-business-profile"
+  noindex
+>
+  <section class="directory">
+    <div class="container">
+      <h1 class="heading-with-line">Search the Directory</h1>
+
+      <SearchForm class="directory__search" />
+
+      <nav class="directory__filters" aria-label="Filter results by category" hidden></nav>
+
+      <p class="directory__count" aria-live="polite">
+        Type what you're looking for, or <a href="/directory/">browse the directory</a>.
+      </p>
+
+      <div class="directory__grid"></div>
+
+      <div class="directory__more" hidden>
+        <button type="button" class="btn btn--outline btn--outline--blue">
+          SHOW MORE RESULTS
+        </button>
+      </div>
+
+      <noscript>
+        <p class="directory__count">
+          Search needs JavaScript. You can still <a href="/directory/">browse the directory</a>.
+        </p>
+      </noscript>
+    </div>
+  </section>
+
+  <Cta />
+</BaseLayout>
+
+<script>
+  import { formatRating, starStates } from "@/lib/rating";
+
+  // Minimal types for the Pagefind JS API (https://pagefind.app/docs/api/).
+  interface ResultData {
+    url: string;
+    meta: Record<string, string | undefined>;
+  }
+  interface SearchResponse {
+    results: { id: string; data: () => Promise<ResultData> }[];
+    /** Counts per filter value for the current search, ignoring the active filters. */
+    totalFilters: Record<string, Record<string, number>>;
+  }
+  interface Pagefind {
+    init: () => Promise<void>;
+    filters: () => Promise<unknown>;
+    search: (
+      term: string | null,
+      options?: { filters?: Record<string, string> },
+    ) => Promise<SearchResponse>;
+  }
+
+  const PAGE_SIZE = 24;
+  const DEBOUNCE_MS = 250;
+
+  const input = document.querySelector<HTMLInputElement>(".directory__search input[name=q]");
+  const form = input?.form;
+  const filters = document.querySelector<HTMLElement>(".directory__filters");
+  const status = document.querySelector<HTMLElement>(".directory__count");
+  const grid = document.querySelector<HTMLElement>(".directory__grid");
+  const more = document.querySelector<HTMLElement>(".directory__more");
+  const moreButton = more?.querySelector("button");
+
+  let pagefind: Promise<Pagefind> | undefined;
+  let results: SearchResponse["results"] = [];
+  let shown = 0;
+  let searchId = 0;
+
+  /** Loaded on first use; the index is built into dist/pagefind/ by `npm run build`. */
+  function loadPagefind(): Promise<Pagefind> {
+    pagefind ??= (async () => {
+      const path = "/pagefind/pagefind.js";
+      const module = (await import(/* @vite-ignore */ path)) as Pagefind;
+      await module.init();
+      // Searches only report filter counts once the filter data has been loaded.
+      await module.filters();
+      return module;
+    })();
+    return pagefind;
+  }
+
+  function readUrl() {
+    const params = new URL(location.href).searchParams;
+    return { q: params.get("q")?.trim() ?? "", category: params.get("category") ?? "" };
+  }
+
+  function searchUrl(q: string, category: string) {
+    const url = new URL("/search/", location.origin);
+    if (q) url.searchParams.set("q", q);
+    if (category) url.searchParams.set("category", category);
+    return url;
+  }
+
+  function el<K extends keyof HTMLElementTagNameMap>(
+    tag: K,
+    className?: string,
+    text?: string,
+  ): HTMLElementTagNameMap[K] {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  /** Same markup as BusinessCard.astro. */
+  function renderCard({ url, meta }: ResultData): HTMLElement {
+    const card = el("article", "suggested-bcard");
+
+    const imageWrap = el("div", "suggested-bcard__image");
+    const image = el("img");
+    image.src = meta.image ?? "";
+    image.alt = "";
+    image.width = 600;
+    image.height = 306;
+    image.loading = "lazy";
+    image.decoding = "async";
+    imageWrap.append(image);
+
+    const copy = el("div", "suggested-bcard__copy");
+    const heading = el("h2", "suggested-bcard__heading");
+    const link = el("a", undefined, meta.title);
+    link.href = url;
+    heading.append(link);
+    copy.append(heading);
+
+    if (meta.category && meta.category_url) {
+      const categories = el("div", "suggested-bcard__categories");
+      const tag = el("a", "category", meta.category);
+      tag.href = meta.category_url;
+      categories.append(tag);
+      copy.append(categories);
+    }
+
+    if (meta.suburb) {
+      const place = el("div", "suggested-bcard__location");
+      const pin = el("img");
+      pin.src = "/images/profile-location-pin.svg";
+      pin.alt = "";
+      place.append(pin, el("span", "suggested-bcard__location-label", meta.suburb));
+      copy.append(place);
+    }
+
+    const value = Number(meta.rating);
+    const count = Number(meta.reviews);
+    if (meta.rating && Number.isFinite(value) && Number.isFinite(count)) {
+      const reviews = el("div", "suggested-bcard__reviews");
+      const stars = el("span", "suggested-bcard__reviews-stars");
+      stars.setAttribute("aria-hidden", "true");
+      stars.append(...starStates(value).map((state) => el("i", `star-${state}`)));
+      const label = el("span", "suggested-bcard__reviews-value", formatRating(value));
+      const countLabel = el("span", "suggested-bcard__reviews-count", `(${count})`);
+      label.setAttribute("aria-hidden", "true");
+      countLabel.setAttribute("aria-hidden", "true");
+      reviews.append(
+        el(
+          "span",
+          "visually-hidden",
+          `Rated ${formatRating(value)} out of 5 from ${count} reviews`,
+        ),
+        label,
+        stars,
+        countLabel,
+      );
+      copy.append(reviews);
+    }
+
+    card.append(imageWrap, copy);
+    return card;
+  }
+
+  function renderFilters(q: string, active: string, counts: Record<string, number> = {}) {
+    if (!filters) return;
+    const names = Object.keys(counts)
+      .filter((name) => counts[name])
+      .sort((a, b) => a.localeCompare(b));
+    filters.replaceChildren();
+    filters.hidden = names.length === 0;
+
+    const chip = (label: string, category: string) => {
+      const link = el("a", category === active ? "category category--active" : "category", label);
+      link.href = searchUrl(q, category).href;
+      if (category === active) link.setAttribute("aria-current", "page");
+      return link;
+    };
+    filters.append(chip("All", ""));
+    for (const name of names) filters.append(chip(`${name} (${counts[name]})`, name));
+  }
+
+  async function showMore(id: number) {
+    const batch = await Promise.all(
+      results.slice(shown, shown + PAGE_SIZE).map((result) => result.data()),
+    );
+    if (id !== searchId || !grid) return;
+    grid.append(...batch.map(renderCard));
+    shown += batch.length;
+    if (more) more.hidden = shown >= results.length;
+  }
+
+  async function run() {
+    const id = ++searchId;
+    const { q, category } = readUrl();
+    if (input && document.activeElement !== input) input.value = q;
+
+    if (!q && !category) {
+      results = [];
+      grid?.replaceChildren();
+      renderFilters(q, category);
+      if (more) more.hidden = true;
+      if (status) {
+        status.textContent = "Type what you're looking for, or ";
+        const link = el("a", undefined, "browse the directory");
+        link.href = "/directory/";
+        status.append(link, ".");
+      }
+      return;
+    }
+
+    try {
+      const engine = await loadPagefind();
+      const response = await engine.search(q || null, category ? { filters: { category } } : {});
+      if (id !== searchId) return;
+
+      results = response.results;
+      shown = 0;
+      grid?.replaceChildren();
+      renderFilters(q, category, response.totalFilters.category);
+
+      const scope = category ? ` in ${category}` : "";
+      const term = q ? ` for “${q}”` : "";
+      const count = results.length;
+      if (status) {
+        status.textContent =
+          count === 0
+            ? `No businesses found${term}${scope}.`
+            : `${count} ${count === 1 ? "business" : "businesses"} found${term}${scope}`;
+      }
+      await showMore(id);
+    } catch (error) {
+      console.error(error);
+      if (status) {
+        status.textContent = import.meta.env.DEV
+          ? "The search index is built with the site: run `npm run build && npm run preview` to try search locally."
+          : "Search isn't available right now. Please try again later.";
+      }
+    }
+  }
+
+  let debounce: ReturnType<typeof setTimeout> | undefined;
+
+  input?.addEventListener("input", () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => {
+      history.replaceState(null, "", searchUrl(input.value.trim(), readUrl().category));
+      void run();
+    }, DEBOUNCE_MS);
+  });
+
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    clearTimeout(debounce);
+    history.pushState(null, "", searchUrl(input?.value.trim() ?? "", readUrl().category));
+    void run();
+  });
+
+  filters?.addEventListener("click", (event) => {
+    const link = event.target instanceof Element ? event.target.closest("a") : null;
+    if (!link) return;
+    event.preventDefault();
+    history.pushState(null, "", link.href);
+    void run();
+  });
+
+  moreButton?.addEventListener("click", () => void showMore(searchId));
+  window.addEventListener("popstate", () => void run());
+
+  // Start downloading the engine while the user types.
+  input?.addEventListener("focus", () => void loadPagefind().catch(() => {}), { once: true });
+
+  void run();
+</script>

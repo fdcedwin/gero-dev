@@ -1,6 +1,21 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Cta from "@/components/site/Cta.astro";
+import { getCategoryMap, type Category } from "@/lib/businesses";
+
+// Category options come from categories.yaml, so submissions use the same keys as listings.
+const categories = [...(await getCategoryMap()).values()];
+const byName = (a: Category, b: Category) => a.data.name.localeCompare(b.data.name);
+const categoryGroups = categories
+  .filter((category) => !category.data.parent)
+  .sort(byName)
+  .map((parent) => ({
+    parent,
+    options: [
+      parent,
+      ...categories.filter((category) => category.data.parent?.id === parent.id).sort(byName),
+    ],
+  }));
 ---
 
 <BaseLayout title="List Your Business | What's On Gero">
@@ -60,7 +75,25 @@ import Cta from "@/components/site/Cta.astro";
 
   <section class="business-form">
     <div class="container">
-      <form action="#">
+      {/*
+        Handled by Netlify Forms: Netlify finds this form in the built HTML at deploy time
+        (data-netlify + the hidden form-name field) and stores submissions in the Netlify UI.
+        bot-field is a honeypot; Netlify also runs Akismet spam filtering on every submission.
+      */}
+      <form
+        name="submit-business"
+        method="POST"
+        action="/submit-business/thanks/"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="submit-business" />
+        <p class="visually-hidden" aria-hidden="true">
+          <label>
+            Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off" />
+          </label>
+        </p>
+
         <div class="business-form__section">
           <div class="business-form__text">
             <h3>Business Details</h3>
@@ -77,7 +110,10 @@ import Cta from "@/components/site/Cta.astro";
                   Business Name <span aria-hidden="true">*</span>
                 </label>
 
-                <small class="error none"> Cannot be empty </small>
+                <small class="error none" id="business-name-error">
+                  {" "}
+                  Cannot be empty{" "}
+                </small>
               </div>
 
               <input
@@ -87,6 +123,8 @@ import Cta from "@/components/site/Cta.astro";
                 id="business-name"
                 autocomplete="organization"
                 placeholder="e.g. What’s On Gero"
+                maxlength="120"
+                aria-describedby="business-name-error"
                 required
               />
             </fieldset>
@@ -97,19 +135,27 @@ import Cta from "@/components/site/Cta.astro";
                   Category <span aria-hidden="true">*</span>
                 </label>
 
-                <small class="error none"> Please select a category </small>
+                <small class="error none" id="category-error">
+                  {" "}
+                  Please select a category{" "}
+                </small>
               </div>
 
               <select
                 class="business-form__fieldset-input business-form__fieldset-select"
                 name="category"
                 id="category"
+                aria-describedby="category-error"
                 required
               >
                 <option value="">Select a category</option>
-                <option value="web-design">Web Design</option>
-                <option value="development">Development</option>
-                <option value="marketing">Marketing</option>
+                {categoryGroups.map(({ parent, options }) => (
+                  <optgroup label={parent.data.name}>
+                    {options.map((category) => (
+                      <option value={category.id}>{category.data.name}</option>
+                    ))}
+                  </optgroup>
+                ))}
               </select>
             </fieldset>
 
@@ -119,7 +165,10 @@ import Cta from "@/components/site/Cta.astro";
                   Short Description <span aria-hidden="true">*</span>
                 </label>
 
-                <small class="error none"> Cannot be empty </small>
+                <small class="error none" id="short-description-error">
+                  {" "}
+                  Cannot be empty{" "}
+                </small>
               </div>
 
               <textarea
@@ -128,6 +177,7 @@ import Cta from "@/components/site/Cta.astro";
                 maxlength="140"
                 id="short-description"
                 placeholder="Write a short description of your business (max. 140 characters)"
+                aria-describedby="short-description-error"
                 required
               ></textarea>
 
@@ -142,7 +192,10 @@ import Cta from "@/components/site/Cta.astro";
                   Full Description <span aria-hidden="true">*</span>
                 </label>
 
-                <small class="error none"> Cannot be empty </small>
+                <small class="error none" id="full-description-error">
+                  {" "}
+                  Cannot be empty{" "}
+                </small>
               </div>
 
               <textarea
@@ -151,6 +204,7 @@ import Cta from "@/components/site/Cta.astro";
                 maxlength="1000"
                 id="full-description"
                 placeholder="Tell customers about your business, products, and what makes you unique... (max. 1,000 characters)"
+                aria-describedby="full-description-error"
                 required
               ></textarea>
 
@@ -166,13 +220,65 @@ import Cta from "@/components/site/Cta.astro";
         <div class="business-form__fields">
           <fieldset class="business-form__fieldset">
             <div class="business-form__fieldset-head">
+              <label for="address">
+                Street Address <span aria-hidden="true">*</span>
+              </label>
+
+              <small class="error none" id="address-error">
+                {" "}
+                Cannot be empty{" "}
+              </small>
+            </div>
+
+            <input
+              type="text"
+              class="business-form__fieldset-input"
+              name="address"
+              id="address"
+              autocomplete="street-address"
+              placeholder="e.g. 186 Marine Terrace, Geraldton WA 6530"
+              aria-describedby="address-error"
+              required
+            />
+          </fieldset>
+
+          <fieldset class="business-form__fieldset">
+            <div class="business-form__fieldset-head">
+              <label for="suburb">
+                Suburb <span aria-hidden="true">*</span>
+              </label>
+
+              <small class="error none" id="suburb-error">
+                {" "}
+                Cannot be empty{" "}
+              </small>
+            </div>
+
+            <input
+              type="text"
+              class="business-form__fieldset-input"
+              name="suburb"
+              id="suburb"
+              autocomplete="address-level2"
+              placeholder="e.g. Webberton"
+              aria-describedby="suburb-error"
+              required
+            />
+          </fieldset>
+
+          <fieldset class="business-form__fieldset">
+            <div class="business-form__fieldset-head">
               <label for="phone-number">
                 Phone Number <span aria-hidden="true">*</span>
               </label>
 
-              <small class="error none"> Invalid phone number </small>
+              <small class="error none" id="phone-number-error">
+                {" "}
+                Invalid phone number{" "}
+              </small>
             </div>
 
+            {/* Same rule as the listing schema: digits, spaces, +, - and (). */}
             <input
               type="tel"
               class="business-form__fieldset-input"
@@ -181,6 +287,8 @@ import Cta from "@/components/site/Cta.astro";
               autocomplete="tel"
               inputmode="tel"
               placeholder="(08) 1234 5678"
+              pattern="[+\(\)\d\s\-]{6,20}"
+              aria-describedby="phone-number-error"
               required
             />
           </fieldset>
@@ -191,7 +299,10 @@ import Cta from "@/components/site/Cta.astro";
                 Email Address <span aria-hidden="true">*</span>
               </label>
 
-              <small class="error none"> Invalid email </small>
+              <small class="error none" id="email-address-error">
+                {" "}
+                Invalid email{" "}
+              </small>
             </div>
 
             <input
@@ -201,6 +312,7 @@ import Cta from "@/components/site/Cta.astro";
               id="email-address"
               autocomplete="email"
               placeholder="user@domain.au"
+              aria-describedby="email-address-error"
               required
             />
           </fieldset>
@@ -209,7 +321,10 @@ import Cta from "@/components/site/Cta.astro";
             <div class="business-form__fieldset-head">
               <label for="website"> Website </label>
 
-              <small class="error none"> Invalid URL </small>
+              <small class="error none" id="website-error">
+                {" "}
+                Must start with https://{" "}
+              </small>
             </div>
 
             <input
@@ -219,6 +334,8 @@ import Cta from "@/components/site/Cta.astro";
               id="website"
               inputmode="url"
               placeholder="https://www.yourbusiness.com.au"
+              pattern="https://.+"
+              aria-describedby="website-error"
             />
           </fieldset>
 
@@ -226,7 +343,10 @@ import Cta from "@/components/site/Cta.astro";
             <div class="business-form__fieldset-head">
               <label for="facebook"> Facebook </label>
 
-              <small class="error none"> Invalid Facebook URL </small>
+              <small class="error none" id="facebook-error">
+                {" "}
+                Invalid Facebook URL{" "}
+              </small>
             </div>
 
             <input
@@ -236,6 +356,8 @@ import Cta from "@/components/site/Cta.astro";
               id="facebook"
               inputmode="url"
               placeholder="https://www.facebook.com/yourbusiness"
+              pattern="https://([a-z0-9\-]+\.)*facebook\.com(/.*)?"
+              aria-describedby="facebook-error"
             />
           </fieldset>
 
@@ -243,7 +365,10 @@ import Cta from "@/components/site/Cta.astro";
             <div class="business-form__fieldset-head">
               <label for="instagram"> Instagram </label>
 
-              <small class="error none"> Invalid Instagram URL </small>
+              <small class="error none" id="instagram-error">
+                {" "}
+                Invalid Instagram URL{" "}
+              </small>
             </div>
 
             <input
@@ -253,8 +378,16 @@ import Cta from "@/components/site/Cta.astro";
               id="instagram"
               inputmode="url"
               placeholder="https://www.instagram.com/yourbusiness"
+              pattern="https://([a-z0-9\-]+\.)*instagram\.com(/.*)?"
+              aria-describedby="instagram-error"
             />
           </fieldset>
+        </div>
+
+        <div class="business-form__actions">
+          <button type="submit" class="btn">
+            SUBMIT LISTING
+          </button>
         </div>
       </form>
     </div>
@@ -263,21 +396,74 @@ import Cta from "@/components/site/Cta.astro";
   <Cta />
 
   <script>
+    const form = document.querySelector<HTMLFormElement>("form[name='submit-business']");
+    const fields = form
+      ? [
+          ...form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+            ".business-form__fieldset-input",
+          ),
+        ]
+      : [];
+
     // multiple textareas with counters
-    const textareas = document.querySelectorAll<HTMLTextAreaElement>(
-      ".business-form__fieldset-textarea",
-    );
+    form
+      ?.querySelectorAll<HTMLTextAreaElement>(".business-form__fieldset-textarea")
+      .forEach((textarea) => {
+        const count = textarea
+          .closest(".business-form__fieldset")
+          ?.querySelector(".textarea-count");
+        if (!count) return;
 
-    textareas.forEach((textarea) => {
-      const count = textarea.closest(".business-form__fieldset")?.querySelector(".texarea-count");
-      if (!count) return;
+        const updateCount = () => {
+          count.textContent = String(textarea.value.length);
+        };
 
-      const updateCount = () => {
-        count.textContent = String(textarea.value.length);
-      };
+        textarea.addEventListener("input", updateCount);
+        updateCount();
+      });
 
-      textarea.addEventListener("input", updateCount);
-      updateCount();
-    });
+    /** Shows or hides the field's error message; returns whether the field is valid. */
+    function validate(field: (typeof fields)[number]): boolean {
+      // Whitespace-only answers count as empty.
+      if (field.value.trim() === "") field.value = "";
+      const valid = field.checkValidity();
+      const errorId = field.getAttribute("aria-describedby");
+      const error = errorId ? document.getElementById(errorId) : null;
+      error?.classList.toggle("none", valid);
+      if (valid) field.removeAttribute("aria-invalid");
+      else field.setAttribute("aria-invalid", "true");
+      return valid;
+    }
+
+    if (form) {
+      const submitButton = form.querySelector<HTMLButtonElement>("button[type=submit]");
+
+      // With JS we show the design's inline errors; without it, the browser's own validation still runs.
+      form.noValidate = true;
+
+      form.addEventListener("submit", (event) => {
+        const invalid = fields.filter((field) => !validate(field));
+        if (invalid.length > 0) {
+          event.preventDefault();
+          invalid[0]?.focus();
+          return;
+        }
+        // Prevent double submissions; re-enable if the user comes back with the Back button.
+        submitButton?.setAttribute("disabled", "");
+      });
+      window.addEventListener("pageshow", () => submitButton?.removeAttribute("disabled"));
+
+      // Once a field has been flagged, re-check it as the user fixes it.
+      for (const field of fields) {
+        const recheck = () => {
+          if (field.hasAttribute("aria-invalid")) validate(field);
+        };
+        field.addEventListener("input", recheck);
+        field.addEventListener("change", recheck);
+        field.addEventListener("blur", () => {
+          if (field.value !== "") validate(field);
+        });
+      }
+    }
   </script>
 </BaseLayout>

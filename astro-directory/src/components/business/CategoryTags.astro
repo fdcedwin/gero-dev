@@ -6,16 +6,19 @@ interface Props {
   categories: Category[];
   /** Highlight the primary (first) category. */
   highlightPrimary?: boolean;
+  /** Mark the tags as Pagefind category filters and weight them up (profile page only). */
+  searchFilter?: boolean;
 }
 
-const { block, categories, highlightPrimary = false } = Astro.props;
+const { block, categories, highlightPrimary = false, searchFilter = false } = Astro.props;
 ---
 
-<div class={`${block}__categories`}>
+<div class={`${block}__categories`} data-pagefind-weight={searchFilter ? "5" : undefined}>
   {categories.map((category, i) => (
     <a
       href={categoryHref(category.id)}
       class:list={["category", { "category--active": highlightPrimary && i === 0 }]}
+      data-pagefind-filter={searchFilter ? "category" : undefined}
     >
       {category.data.name}
     </a>

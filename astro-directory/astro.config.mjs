@@ -6,7 +6,12 @@ export default defineConfig({
   site: "https://www.whatsongero.com",
   trailingSlash: "always",
 
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Search results and the form confirmation are noindex, so keep them out of the sitemap.
+      filter: (page) => !page.endsWith("/search/") && !page.endsWith("/submit-business/thanks/"),
+    }),
+  ],
 
   env: {
     schema: {

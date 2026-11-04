@@ -1,0 +1,9 @@
+# Netlify builds the Astro site in astro-directory/ (the static files at the repo root are not deployed).
+# Node version comes from astro-directory/.nvmrc. Security headers live in astro-directory/public/_headers.
+[build]
+  base = "astro-directory"
+  command = "npm run build"
+  publish = "dist"
+
+# SITE_INDEXABLE stays false (noindex) unless set. Set SITE_INDEXABLE=true in the Netlify UI
+# (Site configuration → Environment variables, "Production" context) once the real domain is live.

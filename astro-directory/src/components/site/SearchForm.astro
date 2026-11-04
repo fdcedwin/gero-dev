@@ -1,0 +1,27 @@
+---
+interface Props {
+  id?: string;
+  value?: string;
+  class?: string;
+}
+
+const { id = "search-query", value = "", class: className } = Astro.props;
+---
+
+<div class:list={["fieldset", className]}>
+  <form action="/search/" method="get" role="search">
+    <label for={id} class="visually-hidden">
+      Search businesses
+    </label>
+    <input
+      type="search"
+      name="q"
+      id={id}
+      class="fieldset__field"
+      value={value}
+      placeholder="What are you looking for? e.g. Restaurants, Mechanic, Plumbing"
+      autocomplete="off"
+    />
+    <input class="fieldset__submit" type="submit" value="Search" />
+  </form>
+</div>

@@ -95,8 +95,28 @@
         }
     }
 
+    &__actions {
+        margin-top: 40px;
+
+        .btn {
+            border: 0;
+            font-family: var(--body-font, Poppins);
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: progress;
+            }
+        }
+    }
+
     .error {
         position: relative;
+
+        /* Shown by the form script when a field is invalid. */
+        &.none {
+            display: none;
+        }
+
         text-align: left;
         left: 0;
         color: var(--color-red-500);

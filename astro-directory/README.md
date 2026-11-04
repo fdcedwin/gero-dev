@@ -15,14 +15,14 @@ npm ci             # install exact locked versions
 npm run dev        # http://localhost:4321
 ```
 
-| Command                          | What it does                                                  |
-| -------------------------------- | ------------------------------------------------------------- |
-| `npm run dev`                    | Local dev server with hot reload                              |
-| `npm run build`                  | Type-check (`astro check`), then build static site to `dist/` |
-| `npm run preview`                | Serve the built `dist/` locally                               |
-| `npm test`                       | Unit tests (Vitest)                                           |
-| `npm run lint` / `format`        | ESLint / Prettier                                             |
-| `npm run new:business -- "Name"` | Scaffold a new listing                                        |
+| Command                          | What it does                                               |
+| -------------------------------- | ---------------------------------------------------------- |
+| `npm run dev`                    | Local dev server with hot reload                           |
+| `npm run build`                  | Type-check, build the static site to `dist/`, index search |
+| `npm run preview`                | Serve the built `dist/` locally (search works here)        |
+| `npm test`                       | Unit tests (Vitest)                                        |
+| `npm run lint` / `format`        | ESLint / Prettier                                          |
+| `npm run new:business -- "Name"` | Scaffold a new listing                                     |
 
 ## Managing businesses
 
@@ -71,6 +71,31 @@ Rename the folder and add a redirect from the old URL.
 
 Categories are defined in `src/content/categories.yaml`. The key is the URL (`/directory/category/<key>/`). A business lists categories by key, primary first. Categories with no published businesses get no page.
 
+## Search
+
+`/search/` is powered by [Pagefind](https://pagefind.app): `npm run build` indexes the generated profile pages into `dist/pagefind/`, and the browser downloads only the small index chunks a query needs, so it stays fast with thousands of listings. No server or third-party service is involved.
+
+- **What is indexed:** only business profiles (the `data-pagefind-body` block in `pages/directory/[slug].astro`): name, categories (weighted higher), suburb and descriptions. Contact details, hours and owner info are excluded.
+- **Filters:** results can be narrowed by category; suburb is indexed as a filter too, ready for a future suburb filter.
+- **Locally:** the index only exists after a build. In `npm run dev` the search page shows a hint; use `npm run build && npm run preview` to try it.
+- **Entry points:** the home page hero, the directory pages and `/search/?q=…` links all go to the search page.
+
+## Submit-business form (Netlify Forms)
+
+`/submit-business/` posts to [Netlify Forms](https://docs.netlify.com/forms/setup/): no backend code. Netlify finds the form in the built HTML at deploy time and stores submissions in the Netlify UI. After submitting, visitors land on `/submit-business/thanks/`.
+
+One-time setup in Netlify:
+
+1. **Enable form detection:** _Site configuration → Forms → Enable form detection_, then redeploy. Without this, submissions are not captured.
+2. **Notifications:** _Site configuration → Forms → Form notifications_ to email new submissions to the team.
+3. **Spam:** submissions go through Akismet automatically, and the form has a honeypot field (`bot-field`). Flagged submissions appear under _Spam submissions_.
+
+Submissions are **not published automatically**. Review each one, then create the listing with `npm run new:business -- "Name"` (category values in the submission are already the keys from `categories.yaml`). Validation in the browser mirrors the listing schema, but treat submissions as untrusted: the build-time schema checks are the real gate.
+
+## Deploying to Netlify
+
+`netlify.toml` at the repo root sets the base directory to `astro-directory/`, runs `npm run build` and publishes `dist/`. Node comes from `.nvmrc`. Set `SITE_INDEXABLE=true` as an environment variable for the **Production** context only once the real domain is live.
+
 ## Project structure
 
 ```
@@ -97,4 +122,5 @@ public/                    Fonts, static images, _headers
 - **Security headers:** HSTS, `frame-ancestors`, nosniff, Referrer-Policy and Permissions-Policy live in `public/_headers`. That file works on Netlify and Cloudflare Pages; on Vercel, move them to `vercel.json`.
 - **Search indexing:** controlled by `SITE_INDEXABLE` (see `.env.example`). It defaults to `noindex` and should be set to `true` only for production.
 - **Dependencies:** versions are pinned exactly and the lockfile is committed. `ci.example.yml` is a ready-made CI workflow (`npm audit`, lint, tests, build; actions pinned to commit SHAs). Copy it to `.github/workflows/` at the repo root to enable it.
-- **Forms:** the newsletter and submit-business forms are not wired to a backend yet. They will need server-side validation, rate limiting and spam protection.
+- **Forms:** submit-business is handled by Netlify Forms (Akismet spam filtering + honeypot; see above). The newsletter form is not wired to a backend yet.
+- **Search page CSP:** Pagefind runs WebAssembly, so `/search/` alone adds `'wasm-unsafe-eval'` to its `script-src`. No other page allows it.

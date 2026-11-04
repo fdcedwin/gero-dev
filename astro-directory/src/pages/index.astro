@@ -1,6 +1,17 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Cta from "@/components/site/Cta.astro";
+import SearchForm from "@/components/site/SearchForm.astro";
+import { categoryHref } from "@/lib/businesses";
+
+// Categories go straight to their listing page; anything else runs a search.
+const popularSearches = [
+  { label: "Restaurants", href: categoryHref("restaurants") },
+  { label: "Cafes", href: categoryHref("cafes") },
+  { label: "Plumbers", href: categoryHref("plumbers") },
+  { label: "Hotels", href: categoryHref("accommodation") },
+  { label: "Activities", href: "/search/?q=activities" },
+];
 ---
 
 <BaseLayout currentNav="home">
@@ -14,35 +25,14 @@ import Cta from "@/components/site/Cta.astro";
             Discover the best businesses, events, attractions, and local favourites in Geraldton.
           </p>
         </div>
-        <div class="hero__search fieldset">
-          <form action="">
-            <input
-              type="search"
-              name="search"
-              id="search"
-              class="fieldset__field"
-              placeholder="What are you looking for? e.g. Restaurants, Mechanic, Plumbing"
-            />
-            <input class="fieldset__submit" type="submit" value="Search" />
-          </form>
-        </div>
+        <SearchForm id="search" class="hero__search" />
         <div class="hero__tags">
           <span class="hero__tags-label">Popular searches:</span>
-          <a href="#" class="hero__tags-tag">
-            Restaurants
-          </a>
-          <a href="#" class="hero__tags-tag">
-            Cafes
-          </a>
-          <a href="#" class="hero__tags-tag">
-            Plumbers
-          </a>
-          <a href="#" class="hero__tags-tag">
-            Hotels
-          </a>
-          <a href="#" class="hero__tags-tag">
-            Activities
-          </a>
+          {popularSearches.map(({ label, href }) => (
+            <a href={href} class="hero__tags-tag">
+              {label}
+            </a>
+          ))}
         </div>
       </div>
 

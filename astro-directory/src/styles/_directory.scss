@@ -38,6 +38,34 @@
         }
     }
 
+    /* The shared search box is white-on-blue in the hero; give it an outline on the white page. */
+    &__search {
+        max-width: 640px;
+        margin-bottom: 20px;
+
+        .fieldset__field {
+            border: 1px solid var(--color-blue-200);
+            border-right: 0;
+        }
+    }
+
+    &__more {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+
+        .btn {
+            width: auto;
+            font-family: inherit;
+        }
+    }
+
+    /* The search page toggles these with the hidden attribute; keep display: flex from overriding it. */
+    &__filters[hidden],
+    &__more[hidden] {
+        display: none;
+    }
+
     &__count {
         color: var(--color-neutral-500);
         font-size: 14px;

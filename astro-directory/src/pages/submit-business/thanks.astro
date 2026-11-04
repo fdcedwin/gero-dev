@@ -1,0 +1,22 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Cta from "@/components/site/Cta.astro";
+import { SITE } from "@/site";
+---
+
+{/* Netlify Forms redirects here after a successful submission (the form's action). */}
+<BaseLayout title={`Thanks for your submission | ${SITE.name}`} noindex>
+  <section class="directory">
+    <div class="container">
+      <h1 class="heading-with-line">Thanks, we've received your listing</h1>
+      <p class="directory__count">
+        We'll review your business details before your listing goes live in the directory.
+      </p>
+      <a href="/directory/" class="btn btn--simple">
+        BROWSE THE DIRECTORY <span>→</span>
+      </a>
+    </div>
+  </section>
+
+  <Cta />
+</BaseLayout>

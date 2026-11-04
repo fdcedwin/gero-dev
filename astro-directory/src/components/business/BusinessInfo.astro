@@ -14,7 +14,8 @@ const listedLabel = listedSince.toLocaleDateString("en-AU", {
 });
 ---
 
-<div class="opening-hours info-box">
+{/* Owner and listing date are not useful search terms. */}
+<div class="opening-hours info-box" data-pagefind-ignore>
   <h2 class="opening-hours__heading">Business Info</h2>
 
   <dl class="opening-hours__list">

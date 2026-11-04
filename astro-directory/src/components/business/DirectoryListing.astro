@@ -1,6 +1,7 @@
 ---
 import type { Page } from "astro";
 import { categoryHref, categoryIds, type Business, type Category } from "@/lib/businesses";
+import SearchForm from "@/components/site/SearchForm.astro";
 import BusinessCard from "./BusinessCard.astro";
 
 interface Props {
@@ -23,6 +24,8 @@ const categoriesOf = (business: Business) =>
 <section class="directory">
   <div class="container">
     <h1 class="heading-with-line">{heading}</h1>
+
+    <SearchForm class="directory__search" />
 
     <nav class="directory__filters" aria-label="Categories">
       <a href="/directory/" class:list={["category", { "category--active": !activeCategoryId }]}>

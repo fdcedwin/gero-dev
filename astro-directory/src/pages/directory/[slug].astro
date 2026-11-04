@@ -16,6 +16,7 @@ import OpeningHours from "@/components/business/OpeningHours.astro";
 import Rating from "@/components/business/Rating.astro";
 import {
   businessHref,
+  categoryHref,
   categoryIds,
   createRelatedLookup,
   getCategoryMap,
@@ -62,6 +63,13 @@ const shareImage = await getImage({
   height: 630,
   fit: "cover",
   format: "jpg",
+});
+// Same size as BusinessCard's cover, so search results reuse the already-built file.
+const cardImage = await getImage({
+  src: data.gallery[0]?.src ?? defaultHero,
+  width: 600,
+  height: 306,
+  fit: "cover",
 });
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -129,17 +137,35 @@ const localBusiness = {
 
   <section class="business-profile">
     <div class="container">
-      <div class="business-profile-container">
+      {/* Search index (Pagefind): only this block is indexed; the data-* attributes feed result cards. */}
+      <div
+        class="business-profile-container"
+        data-pagefind-body
+        data-pagefind-meta="image[data-card-image], suburb[data-suburb], category[data-category], category_url[data-category-url], rating[data-rating], reviews[data-reviews]"
+        data-card-image={cardImage.src}
+        data-suburb={data.location.suburb}
+        data-category={categories[0]?.data.name}
+        data-category-url={categories[0] && categoryHref(categories[0].id)}
+        data-rating={data.rating?.value}
+        data-reviews={data.rating?.count}
+      >
         <Gallery images={data.gallery} />
 
         <div class="business-body">
           <h1 class="business-body__title">{data.name}</h1>
 
-          <CategoryTags block="business-body" categories={categories} highlightPrimary />
+          <CategoryTags
+            block="business-body"
+            categories={categories}
+            highlightPrimary
+            searchFilter
+          />
 
           <div class="business-body__location">
             <img src="/images/profile-location-pin.svg" alt="" />
-            <span class="business-body__location-label">{data.location.suburb}</span>
+            <span class="business-body__location-label" data-pagefind-filter="suburb">
+              {data.location.suburb}
+            </span>
           </div>
 
           {data.rating && (
@@ -155,7 +181,7 @@ const localBusiness = {
             <p>{data.shortDescription}</p>
           </div>
 
-          <div class="info-box-container">
+          <div class="info-box-container" data-pagefind-ignore>
             <ContactInfo name={data.name} contact={data.contact} />
             <Location name={data.name} address={data.location.address} mapImage={data.mapImage} />
             {data.hours && <OpeningHours hours={data.hours} />}
@@ -173,7 +199,7 @@ const localBusiness = {
 
           <BusinessInfo owner={data.owner} listedSince={data.listedSince} />
 
-          <a href={SITE.reportListingHref} class="report-link">
+          <a href={SITE.reportListingHref} class="report-link" data-pagefind-ignore>
             REPORT INCORRECT OR OUTDATED INFO
           </a>
         </div>
